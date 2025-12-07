@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:masofaviy_talim_talaba/app/modules/subjects/assignment/assignment_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/details/subject_details.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/test/test_page.dart';
+import 'package:masofaviy_talim_talaba/app/modules/subjects/test/test_result_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/video_player/video_player_page.dart';
 import 'app/modules/grades/grades_page.dart';
 import 'app/modules/home/home_page.dart';
@@ -58,6 +60,14 @@ class MyApp extends StatelessWidget {
                       GoRoute(
                         path: '/test/:test_id',
                         builder: (context, state) => TestPage(id: state.pathParameters['test_id']),
+                      ),
+                      GoRoute(
+                        path: '/test_result/:id',
+                        builder: (context, state) => TestResultPage(id: state.pathParameters['id']),
+                      ),
+                      GoRoute(
+                        path: '/assignment/:id',
+                        builder: (context, state) => AssignmentPage(id: state.pathParameters['id']),
                       ),
                     ],
                   ),

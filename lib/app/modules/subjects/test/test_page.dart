@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/test/test_line.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/test/test_question.dart';
 import 'package:masofaviy_talim_talaba/app/widgets/custom_button.dart';
@@ -11,6 +12,7 @@ class TestPage extends StatefulWidget {
 }
 
 class _TestPageState extends State<TestPage> {
+  int id=45;
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -20,10 +22,13 @@ class _TestPageState extends State<TestPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-              Container(margin:EdgeInsets.only(left: 40,right: 40),child: TestLine()),
-            TestQuestion(),
+            Container(margin:EdgeInsets.only(left: 40,right: 40),child: TestLine()), TestQuestion(),
           SizedBox(height: 20,),
-          SizedBox(width:300,child: CustomButton(text: "Testni yakunlash")),SizedBox(height: 30,)
+          SizedBox(width:300,child: CustomButton(text: "Testni yakunlash",onTap: (){
+            context.go("..");
+            context.go('/subjects/${widget.id}/test_result/$id');
+
+          },)),SizedBox(height: 30,)
           ],
         ),
       )
