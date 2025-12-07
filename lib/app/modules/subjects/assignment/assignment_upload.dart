@@ -56,8 +56,6 @@ class _AssignmentUploadState extends State<AssignmentUpload> {
           ),
         ),
         SizedBox(height: 10,),
-        bu
-        
       ]),
     );
   }
