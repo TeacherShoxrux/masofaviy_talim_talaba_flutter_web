@@ -17,95 +17,93 @@ class _SubjectDetailsState extends State<SubjectDetails> {
   ];
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
-      child: Column(
-        children: [
-          SubjectItemList(
-            title: "Video darsliklar",
-            builder: (context, index) {
-            return Container(
-              margin: EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                border: Border.all(color: AppColors.primaryColor),
-                borderRadius: BorderRadius.circular(10)
-              ),
+    return Column(
+      children: [
+        SubjectItemList(
+          title: "Video darsliklar",
+          builder: (context, index) {
+          return Container(
+            margin: EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              border: Border.all(color: AppColors.primaryColor),
+              borderRadius: BorderRadius.circular(10)
+            ),
 
-              child: ListTile(
-                leading: Icon(Icons.play_circle_fill, color: Colors.red),
-                title: Text(videos[index]),
-                onTap: () {
-                  final video_Id = "12";
+            child: ListTile(
+              leading: Icon(Icons.play_circle_fill, color: Colors.red),
+              title: Text(videos[index]),
+              onTap: () {
+                final video_Id = "12";
 
 
-                  context.go('/subjects/${widget.subjectId}/video/$video_Id');
-                  print("Open video: ${videos[index]}");
-                },
-              ),
-            );
-          }, itemCount: 3,
-          ),
-          SubjectItemList(
-            title: "Testlar",
-            builder: (context, index) {
-            return Container(
-              margin: EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                border: Border.all(color: AppColors.primaryColor),
-                borderRadius: BorderRadius.circular(10)
-              ),
+                context.go('/subjects/${widget.subjectId}/video/$video_Id');
+                print("Open video: ${videos[index]}");
+              },
+            ),
+          );
+        }, itemCount: 3,
+        ),
+        SubjectItemList(
+          title: "Testlar",
+          builder: (context, index) {
+          return Container(
+            margin: EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              border: Border.all(color: AppColors.primaryColor),
+              borderRadius: BorderRadius.circular(10)
+            ),
 
-              child: ListTile(
-                leading: Icon(Icons.checklist_outlined, color: Colors.green),
-                title: Text(videos[index]),
-                onTap: () {
-                  print("Open video: ${videos[index]}");
-                },
-              ),
-            );
-          }, itemCount: 3,
-          ),
-          SubjectItemList(
-            title: "Krossworlar",
-            builder: (context, index) {
-            return Container(
-              margin: EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                border: Border.all(color: AppColors.primaryColor),
-                borderRadius: BorderRadius.circular(10)
-              ),
-              child: ListTile(
-                leading: Icon(Icons.crop_square_sharp, color: Colors.amber),
-                title: Text(videos[index]),
-                onTap: () {
-                  print("Open video: ${videos[index]}");
-                },
-              ),
-            );
-          }, itemCount: 3,
-          ),
-          SubjectItemList(
-            title: "Mustaqil ish topshiriqlari",
-            builder: (context, index) {
-            return Container(
-              margin: EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                border: Border.all(color: AppColors.primaryColor),
-                borderRadius: BorderRadius.circular(10)
-              ),
+            child: ListTile(
+              leading: Icon(Icons.checklist_outlined, color: Colors.green),
+              title: Text(videos[index]),
+              onTap: () {
+                var testid=97;
+                context.go('/subjects/${widget.subjectId}/test/$testid');
+              },
+            ),
+          );
+        }, itemCount: 3,
+        ),
+        SubjectItemList(
+          title: "Krossworlar",
+          builder: (context, index) {
+          return Container(
+            margin: EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              border: Border.all(color: AppColors.primaryColor),
+              borderRadius: BorderRadius.circular(10)
+            ),
+            child: ListTile(
+              leading: Icon(Icons.crop_square_sharp, color: Colors.amber),
+              title: Text(videos[index]),
+              onTap: () {
+                print("Open video: ${videos[index]}");
+              },
+            ),
+          );
+        }, itemCount: 3,
+        ),
+        SubjectItemList(
+          title: "Mustaqil ish topshiriqlari",
+          builder: (context, index) {
+          return Container(
+            margin: EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              border: Border.all(color: AppColors.primaryColor),
+              borderRadius: BorderRadius.circular(10)
+            ),
 
-              child: ListTile(
-                leading: Icon(Icons.assignment_returned_outlined, color: Colors.deepPurpleAccent),
-                title: Text(videos[index]),
-                onTap: () {
-                  print("Open video: ${videos[index]}");
-                },
-              ),
-            );
-          }, itemCount: 3,
-          ),
-        ],
-      ),
+            child: ListTile(
+              leading: Icon(Icons.assignment_returned_outlined, color: Colors.deepPurpleAccent),
+              title: Text(videos[index]),
+              onTap: () {
+                print("Open video: ${videos[index]}");
+              },
+            ),
+          );
+        }, itemCount: 3,
+        ),
+      ],
     );
   }
 }

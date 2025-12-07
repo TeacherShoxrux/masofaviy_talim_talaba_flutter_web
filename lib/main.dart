@@ -2,65 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/details/subject_details.dart';
+import 'package:masofaviy_talim_talaba/app/modules/subjects/test/test_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/video_player/video_player_page.dart';
-
 import 'app/modules/grades/grades_page.dart';
 import 'app/modules/home/home_page.dart';
 import 'app/modules/login/login_page.dart';
 import 'app/modules/main/main_layout.dart';
-//
-// void main() {
-//   runApp(MyApp());
-// }
-//
-// class MyApp extends StatelessWidget {
-//   final router = GoRouter(
-//     initialLocation: '/login',
-//     routes: [
-//       GoRoute(
-//         path: '/login',
-//         builder: (context, state) => LoginPage(),
-//       ),
-//       StatefulShellRoute.indexedStack(
-//         builder: (context, state, navigationShell) {
-//           return MainLayout(navigationShell: navigationShell);
-//         },
-//         branches: [
-//           StatefulShellBranch(
-//             routes: [
-//               GoRoute(
-//                 path: '/home',
-//                 builder: (context, state) => HomePage(),
-//               ),
-//             ],
-//           ),
-//           StatefulShellBranch(
-//             routes: [
-//               GoRoute(
-//                 path: '/settings',
-//                 builder: (context, state) => SettingsPage(),
-//               ),
-//             ],
-//           ),
-//         ],
-//       ),
-//     ],
-//   );
-//
-//   MyApp({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp.router(
-//       routerConfig: router,
-//     );
-//   }
-// }
-
-// main.dart
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-
 import 'app/modules/profile/profile_page.dart';
 import 'app/modules/subjects/subjects_page.dart';
 
@@ -107,6 +54,10 @@ class MyApp extends StatelessWidget {
                       GoRoute(
                         path: '/video/:video_id',
                         builder: (context, state) => VideoPlayerPage(id: state.pathParameters['video_id']),
+                      ),
+                      GoRoute(
+                        path: '/test/:test_id',
+                        builder: (context, state) => TestPage(id: state.pathParameters['test_id']),
                       ),
                     ],
                   ),
