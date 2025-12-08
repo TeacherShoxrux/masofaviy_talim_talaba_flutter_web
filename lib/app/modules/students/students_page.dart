@@ -4,6 +4,8 @@ import 'package:masofaviy_talim_talaba/app/modules/students/student_add_alert.da
 import 'package:masofaviy_talim_talaba/app/modules/students/student_info_alert.dart';
 import 'package:masofaviy_talim_talaba/app/modules/students/stundent_append_subject_alert.dart';
 
+import '../../global/theme/app_colors.dart';
+
 class StudentsPage extends StatefulWidget {
   const StudentsPage({super.key});
 
@@ -18,62 +20,62 @@ class _StudentsPageState extends State<StudentsPage> {
     {
       "img": "https://i.pravatar.cc/150?img=1",
       "name": "Abdulloh Karimov",
-      "info": "3-kurs, Kompyuter injiniring"
+      "info": "3-kurs, Kompyuter injiniring",
     },
     {
       "img": "https://i.pravatar.cc/150?img=2",
       "name": "Dilnoza Akromova",
-      "info": "2-kurs, Dasturiy injiniring"
+      "info": "2-kurs, Dasturiy injiniring",
     },
     {
       "img": "https://i.pravatar.cc/150?img=3",
       "name": "Jamshid Raxmonov",
-      "info": "1-kurs, Axborot tizimlari"
+      "info": "1-kurs, Axborot tizimlari",
     },
     {
       "img": "https://i.pravatar.cc/150?img=4",
       "name": "Madina Murodova",
-      "info": "4-kurs, Telekommunikatsiya"
+      "info": "4-kurs, Telekommunikatsiya",
     },
     {
       "img": "https://i.pravatar.cc/150?img=1",
       "name": "Abdulloh Karimov",
-      "info": "3-kurs, Kompyuter injiniring"
+      "info": "3-kurs, Kompyuter injiniring",
     },
     {
       "img": "https://i.pravatar.cc/150?img=2",
       "name": "Dilnoza Akromova",
-      "info": "2-kurs, Dasturiy injiniring"
+      "info": "2-kurs, Dasturiy injiniring",
     },
     {
       "img": "https://i.pravatar.cc/150?img=3",
       "name": "Jamshid Raxmonov",
-      "info": "1-kurs, Axborot tizimlari"
+      "info": "1-kurs, Axborot tizimlari",
     },
     {
       "img": "https://i.pravatar.cc/150?img=4",
       "name": "Madina Murodova",
-      "info": "4-kurs, Telekommunikatsiya"
+      "info": "4-kurs, Telekommunikatsiya",
     },
     {
       "img": "https://i.pravatar.cc/150?img=1",
       "name": "Abdulloh Karimov",
-      "info": "3-kurs, Kompyuter injiniring"
+      "info": "3-kurs, Kompyuter injiniring",
     },
     {
       "img": "https://i.pravatar.cc/150?img=2",
       "name": "Dilnoza Akromova",
-      "info": "2-kurs, Dasturiy injiniring"
+      "info": "2-kurs, Dasturiy injiniring",
     },
     {
       "img": "https://i.pravatar.cc/150?img=3",
       "name": "Jamshid Raxmonov",
-      "info": "1-kurs, Axborot tizimlari"
+      "info": "1-kurs, Axborot tizimlari",
     },
     {
       "img": "https://i.pravatar.cc/150?img=4",
       "name": "Madina Murodova",
-      "info": "4-kurs, Telekommunikatsiya"
+      "info": "4-kurs, Telekommunikatsiya",
     },
   ];
 
@@ -88,9 +90,11 @@ class _StudentsPageState extends State<StudentsPage> {
   void searchStudent(String query) {
     setState(() {
       filteredStudents = students
-          .where((s) =>
-              s["name"].toLowerCase().contains(query.toLowerCase()) ||
-              s["info"].toLowerCase().contains(query.toLowerCase()))
+          .where(
+            (s) =>
+                s["name"].toLowerCase().contains(query.toLowerCase()) ||
+                s["info"].toLowerCase().contains(query.toLowerCase()),
+          )
           .toList();
     });
   }
@@ -102,11 +106,15 @@ class _StudentsPageState extends State<StudentsPage> {
         title: const Text("Talabalar ro'yhati"),
         actions: [
           IconButton(
-            icon: const Icon(Icons.person_add_alt_1),
             onPressed: () {
               showAddStudentDialog(context);
             },
-          )
+            icon: Icon(
+              CupertinoIcons.add_circled,
+              color: AppColors.primaryColor,
+              size: 34,
+            ),
+          ),
         ],
       ),
 
@@ -114,8 +122,6 @@ class _StudentsPageState extends State<StudentsPage> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-
-            /// SEARCH FIELD
             TextField(
               controller: searchController,
               onChanged: searchStudent,
@@ -129,8 +135,6 @@ class _StudentsPageState extends State<StudentsPage> {
             ),
 
             const SizedBox(height: 16),
-
-            /// STUDENTS LIST
             Expanded(
               child: ListView.builder(
                 itemCount: filteredStudents.length,
@@ -157,7 +161,7 @@ class _StudentsPageState extends State<StudentsPage> {
                         s["name"],
                         style: const TextStyle(
                           fontSize: 17,
-                          fontWeight: FontWeight.bold
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       subtitle: Text(s["info"]),
@@ -176,9 +180,9 @@ class _StudentsPageState extends State<StudentsPage> {
                                   fullName: "Ali Valiyev",
                                   birthDate: "15.05.2004",
                                   phone: "+998901234567",
-                                  additionalInfo: "Talaba Informatika kursida o'qiydi",
-                                  );
-
+                                  additionalInfo:
+                                      "Talaba Informatika kursida o'qiydi",
+                                );
                               },
                             ),
                             IconButton(

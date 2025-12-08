@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../../global/theme/app_colors.dart';
 
 class SubjectItemList extends StatefulWidget {
   final String title;
@@ -23,9 +26,8 @@ class _ExpandableVideoListState extends State<SubjectItemList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 15),
-      margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-
+      padding: EdgeInsets.only(top: 0, left: 15, right: 15, bottom: 5),
+      margin: EdgeInsets.only(top: 20, left: 20, right: 20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
@@ -35,29 +37,29 @@ class _ExpandableVideoListState extends State<SubjectItemList> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           GestureDetector(
-            onTap: () {
-              setState(() => isOpen = !isOpen);
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  widget.title,
-                  style: TextStyle(color: Colors.black, fontSize: 24,fontWeight: FontWeight.bold),
+                onTap: () {
+                  setState(() => isOpen = !isOpen);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      widget.title,
+                      style: TextStyle(color: Colors.black, fontSize: 24,fontWeight: FontWeight.bold),
+                    ),
+                    IconButton(
+                      onPressed: (){
+                        setState(() => isOpen = !isOpen);
+                      },
+                      icon: Icon(
+                        isOpen ? Icons.expand_less : Icons.expand_more,
+                        size: 45,
+                        color: Colors.black45,
+                      ),
+                    ),
+                  ],
                 ),
-                IconButton(
-                  onPressed: (){
-                    setState(() => isOpen = !isOpen);
-                  },
-                  icon: Icon(
-                    isOpen ? Icons.expand_less : Icons.expand_more,
-                    size: 45,
-                    color: Colors.black45,
-                  ),
-                ),
-              ],
-            ),
-          ),
+              ),
 
           AnimatedContainer(
             duration: Duration(milliseconds: 300),

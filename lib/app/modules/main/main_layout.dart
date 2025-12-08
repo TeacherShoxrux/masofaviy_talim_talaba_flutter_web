@@ -14,7 +14,8 @@ class MainLayout extends StatefulWidget {
   State<MainLayout> createState() => _MainLayoutState();
 }
 
-class _MainLayoutState extends State<MainLayout> with SingleTickerProviderStateMixin {
+class _MainLayoutState extends State<MainLayout>
+    with SingleTickerProviderStateMixin {
   // Collapse state
   bool collapsed = false;
 
@@ -23,11 +24,37 @@ class _MainLayoutState extends State<MainLayout> with SingleTickerProviderStateM
 
   // Menu definition
   final List<_MenuItemData> menuItems = [
-    _MenuItemData(label: 'Home', icon: Icons.home, routeIndex: 0, path: '/home'),
-    if(StorageService.role=='admin') _MenuItemData(label: 'Student', icon: Icons.people, routeIndex: 1, path: '/student'),
-    _MenuItemData(label: 'Fanlar', icon: Icons.settings, routeIndex: 2, path: '/subjects'),
-    _MenuItemData(label: 'Baholar', icon: Icons.bar_chart, routeIndex: 3, path: '/grades'),
-    _MenuItemData(label: 'Profile', icon: Icons.person, routeIndex:4, path: '/profile'),
+    _MenuItemData(
+      label: 'Home',
+      icon: Icons.home,
+      routeIndex: 0,
+      path: '/home',
+    ),
+    if (StorageService.role == 'admin')
+      _MenuItemData(
+        label: 'Student',
+        icon: Icons.people,
+        routeIndex: 1,
+        path: '/student',
+      ),
+    _MenuItemData(
+      label: 'Fanlar',
+      icon: Icons.settings,
+      routeIndex: 2,
+      path: '/subjects',
+    ),
+    _MenuItemData(
+      label: 'Baholar',
+      icon: Icons.bar_chart,
+      routeIndex: 3,
+      path: '/grades',
+    ),
+    _MenuItemData(
+      label: 'Profile',
+      icon: Icons.person,
+      routeIndex: 4,
+      path: '/profile',
+    ),
   ];
 
   // widths
@@ -41,13 +68,12 @@ class _MainLayoutState extends State<MainLayout> with SingleTickerProviderStateM
 
     return Scaffold(
       appBar: AppBar(
-
         leading: FlutterLogo(),
         animateColor: true,
         centerTitle: false,
         backgroundColor: Colors.grey.shade50,
         title: Text("Masofaviy ta'lim"),
-        shadowColor:AppColors.primaryColor,
+        shadowColor: AppColors.primaryColor,
         elevation: 0.5,
       ),
       body: Row(
@@ -65,12 +91,23 @@ class _MainLayoutState extends State<MainLayout> with SingleTickerProviderStateM
                   children: [
                     // Top header with collapse button
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 12,
+                      ),
                       child: Row(
                         children: [
                           if (!collapsed)
-                            Text('Admin Panel',
-                                style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600)),
+                            Text(
+                              StorageService.role == 'admin '
+                                  ? 'Admin Paneli'
+                                  : "Talaba Paneli",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           Spacer(),
                           Tooltip(
                             message: collapsed ? 'Expand' : 'Collapse',
@@ -78,7 +115,10 @@ class _MainLayoutState extends State<MainLayout> with SingleTickerProviderStateM
                               icon: AnimatedRotation(
                                 turns: collapsed ? 0.5 : 0.0,
                                 duration: Duration(milliseconds: 300),
-                                child: Icon(Icons.chevron_left, color: Colors.black),
+                                child: Icon(
+                                  Icons.chevron_left,
+                                  color: Colors.black,
+                                ),
                               ),
                               onPressed: () {
                                 setState(() {
@@ -108,18 +148,21 @@ class _MainLayoutState extends State<MainLayout> with SingleTickerProviderStateM
                           } else {
                             bgColor = Colors.transparent;
                           }
-
                           return MouseRegion(
                             onEnter: (_) => setState(() => hoveredIndex = idx),
                             onExit: (_) => setState(() => hoveredIndex = null),
                             child: GestureDetector(
                               onTap: () {
-                                // switch branch by index
-                                widget.navigationShell.goBranch(item.routeIndex);
+                                widget.navigationShell.goBranch(
+                                  item.routeIndex,
+                                );
                               },
                               child: AnimatedContainer(
                                 duration: Duration(milliseconds: 200),
-                                margin: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 6,
+                                ),
                                 padding: EdgeInsets.symmetric(horizontal: 6),
                                 decoration: BoxDecoration(
                                   color: bgColor,
@@ -127,13 +170,14 @@ class _MainLayoutState extends State<MainLayout> with SingleTickerProviderStateM
                                 ),
                                 child: Row(
                                   children: [
-                                    // Animated left indicator
                                     AnimatedContainer(
                                       duration: Duration(milliseconds: 200),
                                       width: 4,
                                       height: 48,
                                       decoration: BoxDecoration(
-                                        color: isActive ? Colors.white : Colors.transparent,
+                                        color: isActive
+                                            ? Colors.white
+                                            : Colors.transparent,
                                         borderRadius: BorderRadius.circular(4),
                                       ),
                                     ),
@@ -141,8 +185,11 @@ class _MainLayoutState extends State<MainLayout> with SingleTickerProviderStateM
                                     SizedBox(width: 10),
 
                                     // Icon (centered in collapsed mode)
-                                    Icon(item.icon,
-                                        color:  Colors.black, size: 22),
+                                    Icon(
+                                      item.icon,
+                                      color: Colors.black,
+                                      size: 22,
+                                    ),
 
                                     SizedBox(width: collapsed ? 0 : 12),
 
@@ -153,7 +200,9 @@ class _MainLayoutState extends State<MainLayout> with SingleTickerProviderStateM
                                           item.label,
                                           style: TextStyle(
                                             color: Colors.black,
-                                            fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
+                                            fontWeight: isActive
+                                                ? FontWeight.w600
+                                                : FontWeight.w400,
                                             fontSize: 15,
                                           ),
                                         ),
@@ -165,7 +214,11 @@ class _MainLayoutState extends State<MainLayout> with SingleTickerProviderStateM
                                       AnimatedOpacity(
                                         duration: Duration(milliseconds: 200),
                                         opacity: isActive ? 1 : 0,
-                                        child: Icon(Icons.arrow_forward_ios, size: 14, color: Colors.white70),
+                                        child: Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 14,
+                                          color: Colors.white70,
+                                        ),
                                       ),
                                   ],
                                 ),
@@ -189,8 +242,11 @@ class _MainLayoutState extends State<MainLayout> with SingleTickerProviderStateM
                             Icon(Icons.logout, color: Colors.white),
                             if (!collapsed) ...[
                               SizedBox(width: 12),
-                              Text('Logout', style: TextStyle(color: Colors.white)),
-                            ]
+                              Text(
+                                'Logout',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
                           ],
                         ),
                       ),
@@ -202,9 +258,7 @@ class _MainLayoutState extends State<MainLayout> with SingleTickerProviderStateM
           ),
 
           // Content area
-          Expanded(
-            child: widget.navigationShell,
-          ),
+          Expanded(child: widget.navigationShell),
         ],
       ),
     );

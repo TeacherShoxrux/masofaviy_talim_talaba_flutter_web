@@ -7,6 +7,7 @@ import 'package:masofaviy_talim_talaba/app/modules/subjects/details/subject_deta
 import 'package:masofaviy_talim_talaba/app/modules/subjects/test/test_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/test/test_result_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/video_player/video_player_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'app/Services/storage_service.dart';
 import 'app/modules/grades/grades_page.dart';
 import 'app/modules/home/home_page.dart';
@@ -14,10 +15,12 @@ import 'app/modules/login/login_page.dart';
 import 'app/modules/main/main_layout.dart';
 import 'app/modules/profile/profile_page.dart';
 import 'app/modules/subjects/subjects_page.dart';
+import 'app/modules/subjects/test_add/test_add_page.dart';
 
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
   // await StorageService.loadRole();
+
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(statusBarColor: Colors.blueAccent),
   );
@@ -80,6 +83,11 @@ class MyApp extends StatelessWidget {
                         builder: (context, state) =>
                             TestPage(id: state.pathParameters['test_id']),
                       ),
+                      if(StorageService.role=='admin')GoRoute(
+                        path: '/test_add/:test_id',
+                        builder: (context, state) =>
+                            TestAddPage(id: state.pathParameters['test_id']),
+                      ),
                       GoRoute(
                         path: '/test_result/:id',
                         builder: (context, state) =>
@@ -96,7 +104,6 @@ class MyApp extends StatelessWidget {
               ),
             ],
           ),
-          // Branch 2 -> Settings
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -105,7 +112,6 @@ class MyApp extends StatelessWidget {
               ),
             ],
           ),
-          // Branch 3 -> Profile
           StatefulShellBranch(
             routes: [
               GoRoute(
