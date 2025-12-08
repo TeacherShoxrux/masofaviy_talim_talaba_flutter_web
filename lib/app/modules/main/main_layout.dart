@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:masofaviy_talim_talaba/app/global/theme/app_colors.dart';
 
+import '../../Services/storage_service.dart';
+
 class MainLayout extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
 
@@ -22,10 +24,10 @@ class _MainLayoutState extends State<MainLayout> with SingleTickerProviderStateM
   // Menu definition
   final List<_MenuItemData> menuItems = [
     _MenuItemData(label: 'Home', icon: Icons.home, routeIndex: 0, path: '/home'),
-
-    _MenuItemData(label: 'Fanlar', icon: Icons.settings, routeIndex: 1, path: '/subjects'),
-    _MenuItemData(label: 'Baholar', icon: Icons.bar_chart, routeIndex: 2, path: '/grades'),
-    _MenuItemData(label: 'Profile', icon: Icons.person, routeIndex: 3, path: '/profile'),
+    if(StorageService.role=='admin') _MenuItemData(label: 'Student', icon: Icons.people, routeIndex: 1, path: '/student'),
+    _MenuItemData(label: 'Fanlar', icon: Icons.settings, routeIndex: 2, path: '/subjects'),
+    _MenuItemData(label: 'Baholar', icon: Icons.bar_chart, routeIndex: 3, path: '/grades'),
+    _MenuItemData(label: 'Profile', icon: Icons.person, routeIndex:4, path: '/profile'),
   ];
 
   // widths
