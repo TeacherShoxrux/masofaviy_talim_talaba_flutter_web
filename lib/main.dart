@@ -16,9 +16,7 @@ import 'app/modules/subjects/subjects_page.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.blueAccent,
-    ),
+    const SystemUiOverlayStyle(statusBarColor: Colors.blueAccent),
   );
   runApp(MyApp());
 }
@@ -38,7 +36,15 @@ class MyApp extends StatelessWidget {
           // Branch 0 -> Home
           StatefulShellBranch(
             routes: [
-              GoRoute(path: '/home', builder: (context, state) => HomePage()),
+              GoRoute(
+                path: '/home',
+                builder: (context, state) => HomePage(
+                  subjectsCount: 12,
+                  videosCount: 23,
+                  tasksCount: 56,
+                  studentsCount: 45,
+                ),
+              ),
             ],
           ),
           // Branch 1 -> Reports
@@ -55,19 +61,24 @@ class MyApp extends StatelessWidget {
                     routes: [
                       GoRoute(
                         path: '/video/:video_id',
-                        builder: (context, state) => VideoPlayerPage(id: state.pathParameters['video_id']),
+                        builder: (context, state) => VideoPlayerPage(
+                          id: state.pathParameters['video_id'],
+                        ),
                       ),
                       GoRoute(
                         path: '/test/:test_id',
-                        builder: (context, state) => TestPage(id: state.pathParameters['test_id']),
+                        builder: (context, state) =>
+                            TestPage(id: state.pathParameters['test_id']),
                       ),
                       GoRoute(
                         path: '/test_result/:id',
-                        builder: (context, state) => TestResultPage(id: state.pathParameters['id']),
+                        builder: (context, state) =>
+                            TestResultPage(id: state.pathParameters['id']),
                       ),
                       GoRoute(
                         path: '/assignment/:id',
-                        builder: (context, state) => AssignmentPage(id: state.pathParameters['id']),
+                        builder: (context, state) =>
+                            AssignmentPage(id: state.pathParameters['id']),
                       ),
                     ],
                   ),
@@ -89,7 +100,12 @@ class MyApp extends StatelessWidget {
             routes: [
               GoRoute(
                 path: '/profile',
-                builder: (context, state) => ProfilePage(),
+                builder: (context, state) => ProfilePage(
+                  firstName: 'Shoxrux',
+                  lastName: 'Yarashov',
+                  phoneNumber: '+99895 888 22 66',
+                  imageUrl: 'https://fastly.picsum.photos/id/826/200/200.jpg?hmac=WlCuCjxEhXh_s4IkOpulPoB-LOoGjfZwP4GjNnkzTLA',
+                ),
               ),
             ],
           ),

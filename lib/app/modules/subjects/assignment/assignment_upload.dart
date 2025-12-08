@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../widgets/custom_elevated_button.dart';
 
 class AssignmentUpload extends StatefulWidget {
   const AssignmentUpload({super.key});
@@ -56,6 +59,7 @@ class _AssignmentUploadState extends State<AssignmentUpload> {
           ),
         ),
         SizedBox(height: 10,),
+        CustomElevatedButton(text: "Submit",onPressed: ()=>context.go("/subjects/12"),)
       ]),
     );
   }
