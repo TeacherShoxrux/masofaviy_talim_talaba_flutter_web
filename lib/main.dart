@@ -7,8 +7,7 @@ import 'package:masofaviy_talim_talaba/app/modules/subjects/details/subject_deta
 import 'package:masofaviy_talim_talaba/app/modules/subjects/test/test_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/test/test_result_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/video_player/video_player_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'app/Services/storage_service.dart';
+import 'app/services/storage_service.dart';
 import 'app/modules/grades/grades_page.dart';
 import 'app/modules/home/home_page.dart';
 import 'app/modules/login/login_page.dart';

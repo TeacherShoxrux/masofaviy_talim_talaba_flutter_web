@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../global/theme/app_colors.dart';
 
 class SubjectItemList extends StatefulWidget {
   final String title;

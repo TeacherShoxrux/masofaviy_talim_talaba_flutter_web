@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TestAddPage extends StatefulWidget {
-  const TestAddPage({Key? key, this.id}) : super(key: key);
+  const TestAddPage({super.key, this.id});
   final String? id;
   @override
   State<TestAddPage> createState() => _AddTestDialogState();
@@ -129,7 +129,7 @@ class _AddTestDialogState extends State<TestAddPage> {
                                 },
                               ),
                             );
-                          }).toList(),
+                          }),
                         ],
                       ),
                   ],

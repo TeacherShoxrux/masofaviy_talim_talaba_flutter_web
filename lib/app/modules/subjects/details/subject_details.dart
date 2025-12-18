@@ -5,7 +5,7 @@ import 'package:masofaviy_talim_talaba/app/global/theme/app_colors.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/details/subject_item.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/details/subject_video_add_alert.dart';
 
-import '../../../Services/storage_service.dart';
+import '../../../services/storage_service.dart';
 import '../assignment/assignment_add_alert.dart';
 import '../test_add/test_add_page.dart';
 
@@ -50,9 +50,9 @@ class _SubjectDetailsState extends State<SubjectDetails> {
                       leading: Icon(Icons.play_circle_fill, color: Colors.red),
                       title: Text(videos[index]),
                       onTap: () {
-                        final video_Id = "12";
+                        final videoId = "12";
                         context.go(
-                          '/subjects/${widget.subjectId}/video/$video_Id',
+                          '/subjects/${widget.subjectId}/video/$videoId',
                         );
                         print("Open video: ${videos[index]}");
                       },

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
 
 Future<void> showAddSubjectDialog(BuildContext context) async {
   TextEditingController nameController = TextEditingController();
