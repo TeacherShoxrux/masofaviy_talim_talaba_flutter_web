@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:masofaviy_talim_talaba/app/modules/login/cam.dart';
 import '../../services/storage_service.dart';
 import '../../widgets/app_text_field.dart';
 import '../../widgets/custom_button.dart';
@@ -22,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    // return Cam();
     return Scaffold(
       body: Center(
         child: Container(
@@ -74,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                 const CircleAvatar(
                   radius: 50,
                   backgroundColor: Colors.green,
-                  child: Icon(Icons.face, size: 50, color: Colors.white),
+                  child: Cam(),
                 ),
               ],
 
@@ -102,6 +104,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     print("Talaba login: ${phoneController.text}");
                     StorageService.saveRole('student');
+
                     context.go('/home');
                   } else {
                     // TODO: Admin login logikasi (login + password)

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:masofaviy_talim_talaba/app/modules/students/students_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/assignment/assignment_page.dart';
+import 'package:masofaviy_talim_talaba/app/modules/subjects/assignment_student_list/assignment_student_list_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/details/subject_details.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/test/test_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/test/test_result_page.dart';
@@ -86,6 +87,11 @@ class MyApp extends StatelessWidget {
                         path: '/test_add/:test_id',
                         builder: (context, state) =>
                             TestAddPage(id: state.pathParameters['test_id']),
+                      ),
+                      if(StorageService.role=='admin')GoRoute(
+                        path: '/assignment_student_list/:id',
+                        builder: (context, state) =>
+                            AssignmentSubmissionsPage(id: state.pathParameters['id']),
                       ),
                       GoRoute(
                         path: '/test_result/:id',

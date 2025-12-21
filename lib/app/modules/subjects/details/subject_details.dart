@@ -176,6 +176,9 @@ class _SubjectDetailsState extends State<SubjectDetails> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: ListTile(
+                      trailing: IconButton(
+                          onPressed: () => context.go('/subjects/${widget.subjectId}/assignment_student_list/${widget.subjectId}'),
+                          icon: Icon(Icons.assessment_rounded)),
                       leading: Icon(
                         Icons.assignment_returned_outlined,
                         color: Colors.deepPurpleAccent,
@@ -197,10 +200,6 @@ class _SubjectDetailsState extends State<SubjectDetails> {
                   child: IconButton(
                     onPressed: () {
                       showAddAssignmentDialog(context: context, subjectName: 'fan nomi here');
-                      // showDialog(
-                      //   context: context,
-                      //   builder: (context) => const AddTestDialog(),
-                      // );
 
                     },
                     icon: Icon(
