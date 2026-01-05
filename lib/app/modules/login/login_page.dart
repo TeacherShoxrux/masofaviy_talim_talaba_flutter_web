@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:masofaviy_talim_talaba/app/modules/login/cam.dart';
+import 'package:provider/provider.dart';
 import '../../services/storage_service.dart';
 import '../../widgets/app_text_field.dart';
 import '../../widgets/custom_button.dart';
+import 'auth_controller.dart';
 
 enum UserType { student, admin }
 
@@ -15,7 +17,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  UserType selectedUser = UserType.student;
+  UserType selectedUser = UserType.admin;
 
   TextEditingController phoneController = TextEditingController();
   TextEditingController loginController = TextEditingController();
@@ -23,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    // return Cam();
+
     return Scaffold(
       body: Center(
         child: Container(
@@ -96,22 +98,17 @@ class _LoginPageState extends State<LoginPage> {
               ],
 
               const SizedBox(height: 25),
-
               CustomButton(
                 text: 'Login',
-                onTap: () {
+                onTap: ()async {
                   if (selectedUser == UserType.student) {
-
                     print("Talaba login: ${phoneController.text}");
-                    StorageService.saveRole('student');
-
+                    StorageService.setRole("Student");// ='student';
                     context.go('/home');
                   } else {
-                    // TODO: Admin login logikasi (login + password)
-                    print(
-                        "Admin login: ${loginController.text}, Parol: ${passwordController.text}");
-                    StorageService.saveRole('admin');
-                    context.go('/home');
+                  var result= await context.read<AuthController>().login(loginController.text, passwordController.text);
+                   print("Admin{\n ${result.role}");
+                    // context.go('/home');
                   }
                 },
               ),

@@ -8,6 +8,11 @@ import 'package:masofaviy_talim_talaba/app/modules/subjects/details/subject_deta
 import 'package:masofaviy_talim_talaba/app/modules/subjects/test/test_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/test/test_result_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/video_player/video_player_page.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'app/modules/login/auth_api.dart';
+import 'app/modules/login/auth_controller.dart';
+import 'app/modules/login/auth_repo.dart';
 import 'app/services/storage_service.dart';
 import 'app/modules/grades/grades_page.dart';
 import 'app/modules/home/home_page.dart';
@@ -24,7 +29,17 @@ void main()async {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(statusBarColor: Colors.blueAccent),
   );
-  runApp(MyApp());
+  await StorageService.init();
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (_) => AuthController(
+          repository:AuthRepository(AuthApi()),
+        ),
+      ),
+    ],
+    child: MyApp(),
+  ),);
 }
 
 class MyApp extends StatelessWidget {
@@ -39,7 +54,6 @@ class MyApp extends StatelessWidget {
           return MainLayout(navigationShell: navigationShell);
         },
         branches: [
-          // Branch 0 -> Home
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -53,7 +67,7 @@ class MyApp extends StatelessWidget {
               ),
             ],
           ),
-          if(StorageService.role=='admin')StatefulShellBranch(
+          if(StorageService.role=='Teacher')StatefulShellBranch(
             routes: [
               GoRoute(
                 path: '/students',
