@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../home/home_controller.dart';
 
-class ProfilePage extends StatelessWidget {
-  final String firstName;
-  final String lastName;
-  final String phoneNumber;
-  final String imageUrl;
+class ProfilePage extends StatefulWidget {
 
-  const ProfilePage({
-    super.key,
-    required this.firstName,
-    required this.lastName,
-    required this.phoneNumber,
-    required this.imageUrl,
-  });
+  const ProfilePage({super.key});
 
   @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      context.read<HomeController>().getProfile();
+    });
+  }
+  @override
   Widget build(BuildContext context) {
+    final controller = context.watch<HomeController>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Profil"),
+        title: const Text("Profil sahifasi"),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -30,14 +36,14 @@ class ProfilePage extends StatelessWidget {
               child: CircleAvatar(
                 radius: 60,
                 backgroundColor: Colors.grey.shade300,
-                backgroundImage: NetworkImage(imageUrl),
+                backgroundImage: NetworkImage("imageUrl"),
               ),
             ),
             const SizedBox(height: 20),
 
             // Ism Familya
             Text(
-              "$firstName $lastName",
+             controller.userModel?.fullName??"",
               style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -52,7 +58,7 @@ class ProfilePage extends StatelessWidget {
                 const Icon(Icons.phone, size: 20, color: Colors.blue),
                 const SizedBox(width: 8),
                 Text(
-                  phoneNumber,
+                  controller.userModel?.login??"",
                   style: const TextStyle(
                     fontSize: 16,
                   ),
@@ -63,9 +69,9 @@ class ProfilePage extends StatelessWidget {
             const SizedBox(height: 30),
 
             // Kartochka ko'rinishida ma'lumotlar
-            _buildInfoCard("Ism", firstName),
-            _buildInfoCard("Familya", lastName),
-            _buildInfoCard("Telefon", phoneNumber),
+            _buildInfoCard("ID",  controller.userModel?.id.toString()??""),
+            _buildInfoCard("Ism",  controller.userModel?.fullName??""),
+            _buildInfoCard("Telefon",  controller.userModel?.login??""),
           ],
         ),
       ),

@@ -97,7 +97,7 @@ class _MainLayoutState extends State<MainLayout>
                         children: [
                           if (!collapsed)
                             Text(
-                              StorageService.role == 'admin '
+                              StorageService.role == 'Teacher'
                                   ? 'Admin Paneli'
                                   : "Talaba Paneli",
                               style: TextStyle(

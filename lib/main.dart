@@ -7,7 +7,7 @@ import 'package:masofaviy_talim_talaba/app/modules/home/home_controller.dart';
 import 'package:masofaviy_talim_talaba/app/modules/students/students_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/assignment/assignment_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/assignment_student_list/assignment_student_list_page.dart';
-import 'package:masofaviy_talim_talaba/app/modules/subjects/details/subject_details.dart';
+import 'package:masofaviy_talim_talaba/app/modules/subjects/details/subject_details_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/test/test_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/test/test_result_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/video_player/video_player_page.dart';
@@ -108,7 +108,7 @@ class MyApp extends StatelessWidget {
                   GoRoute(
                     path: ':id',
                     builder: (context, state) =>
-                        SubjectDetails(subjectId: state.pathParameters['id']),
+                        SubjectDetailsPage(subjectId: state.pathParameters['id']!),
                     routes: [
                       GoRoute(
                         path: '${AppRoutes.video}/:video_id',
@@ -159,12 +159,7 @@ class MyApp extends StatelessWidget {
             routes: [
               GoRoute(
                 path: AppRoutes.profile,
-                builder: (context, state) => ProfilePage(
-                  firstName: 'Shoxrux',
-                  lastName: 'Yarashov',
-                  phoneNumber: '+99895 888 22 66',
-                  imageUrl: 'https://fastly.picsum.photos/id/826/200/200.jpg?hmac=WlCuCjxEhXh_s4IkOpulPoB-LOoGjfZwP4GjNnkzTLA',
-                ),
+                builder: (context, state) => ProfilePage(),
               ),
             ],
           ),

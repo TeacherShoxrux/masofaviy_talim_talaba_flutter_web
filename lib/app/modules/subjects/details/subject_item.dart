@@ -58,12 +58,11 @@ class _ExpandableVideoListState extends State<SubjectItemList> {
                   ],
                 ),
               ),
-
           AnimatedContainer(
             duration: Duration(milliseconds: 300),
             height: isOpen ? widget.itemCount * 60 : 0,
             child: ListView.builder(
-              padding: EdgeInsets.only(top: 8),
+              padding: EdgeInsets.only(top: 3),
               itemCount: widget.itemCount,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: widget.builder

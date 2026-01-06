@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:masofaviy_talim_talaba/app/Services/storage_service.dart';
+import 'package:masofaviy_talim_talaba/app/app_routes.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/subject_add_alert.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/subject_controller.dart';
 import 'package:masofaviy_talim_talaba/app/widgets/custom_elevated_button.dart';
@@ -67,14 +68,16 @@ class _SubjectsPageState extends State<SubjectsPage> {
           itemCount: controller.subjects.length,
           itemBuilder: (_, i) => Card(
             child: ListTile(
-              onTap: () => context.go('/subjects/12'),
+              onTap: () => context.go(AppRoutes.subjectDetailById(controller.subjects[i].id.toString())),
               selectedColor: Colors.blueAccent,
               leading: Icon(
                 Icons.science_outlined,
                 size: 34,
                 color: AppColors.primaryColor,
               ),
-              trailing: CustomElevatedButton(text: "Kirish"),
+              trailing: CustomElevatedButton(
+                  onPressed: () => context.go(AppRoutes.subjectDetailById(controller.subjects[i].id.toString())),
+                  text: "Kirish"),
               title: Text( controller.subjects[i].name,),
               titleTextStyle: TextStyle(
                 fontSize: 24,

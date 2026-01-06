@@ -1,22 +1,25 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/details/subject_item.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/details/subject_video_add_alert.dart';
+import 'package:masofaviy_talim_talaba/app/modules/subjects/subject_controller.dart';
+import 'package:provider/provider.dart';
 
 import '../../../global/app_colors.dart';
 import '../../../services/storage_service.dart';
 import '../assignment/assignment_add_alert.dart';
 import '../test_add/test_add_page.dart';
 
-class SubjectDetails extends StatefulWidget {
-  const SubjectDetails({super.key, this.subjectId});
-  final String? subjectId;
+class SubjectDetailsPage extends StatefulWidget {
+  const SubjectDetailsPage({super.key, required this.subjectId});
+  final String subjectId;
   @override
-  State<SubjectDetails> createState() => _SubjectDetailsState();
+  State<SubjectDetailsPage> createState() => _SubjectDetailsState();
 }
 
-class _SubjectDetailsState extends State<SubjectDetails> {
+class _SubjectDetailsState extends State<SubjectDetailsPage> {
   var videos = [
     "Video 1: Introduction",
     "Video 2: Setup",
@@ -24,8 +27,34 @@ class _SubjectDetailsState extends State<SubjectDetails> {
   ];
   bool isAdmin = false;
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.microtask((){
+      context.read<SubjectController>().getSubjectDetailsById(widget.subjectId);
+    });
+  }
+  @override
+  void dispose() {
+    context.read<SubjectController>().details=null;
+    super.dispose();
+  }
+  // @override
+  // void deactivate() {
+  //   context.read<SubjectController>().details=null;
+  //   super.deactivate();
+  // }
+  // @override
+  // void activate() {
+  //   Future.microtask((){
+  //     context.read<SubjectController>().getSubjectDetailsById(widget.subjectId);
+  //   });
+  //   super.activate();
+  // }
+  @override
   Widget build(BuildContext context) {
-    isAdmin = StorageService.role == 'admin';
+    isAdmin = StorageService.role == 'Teacher';
+    var controller= context.read<SubjectController>();
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -33,7 +62,7 @@ class _SubjectDetailsState extends State<SubjectDetails> {
             backgroundColor: Colors.white,
             elevation: 5,
             centerTitle: true,
-            title: Text("fan nomi shu yerda bo'ladi"),
+            title: Text(controller.details?.subject.name??""),
           ),
           Stack(
             children: [
@@ -48,7 +77,7 @@ class _SubjectDetailsState extends State<SubjectDetails> {
                     ),
                     child: ListTile(
                       leading: Icon(Icons.play_circle_fill, color: Colors.red),
-                      title: Text(videos[index]),
+                      title: Text(controller.details?.videos[index].name??""),
                       onTap: () {
                         final videoId = "12";
                         context.go(
@@ -59,7 +88,7 @@ class _SubjectDetailsState extends State<SubjectDetails> {
                     ),
                   );
                 },
-                itemCount: 3,
+                itemCount: controller.details?.videos.length?? 0,
               ),
               if (isAdmin)
                 Positioned(
@@ -94,7 +123,7 @@ class _SubjectDetailsState extends State<SubjectDetails> {
                         Icons.checklist_outlined,
                         color: Colors.green,
                       ),
-                      title: Text(videos[index]),
+                      title: Text(controller.details?.tests[index].name??"",maxLines: 1,),
                       onTap: () {
                         var testid = 97;
                         context.go(
@@ -104,7 +133,7 @@ class _SubjectDetailsState extends State<SubjectDetails> {
                     ),
                   );
                 },
-                itemCount: 3,
+                itemCount: controller.details?.tests.length??0,
               ),
               if (isAdmin)
                 Positioned(
@@ -123,6 +152,7 @@ class _SubjectDetailsState extends State<SubjectDetails> {
                 ),
             ],
           ),
+
           Stack(
             children: [
               SubjectItemList(
@@ -139,14 +169,14 @@ class _SubjectDetailsState extends State<SubjectDetails> {
                         Icons.crop_square_sharp,
                         color: Colors.amber,
                       ),
-                      title: Text(videos[index]),
+                      title: Text(controller.details?.crossWords[index].name??"",maxLines: 1,),
                       onTap: () {
-                        print("Open video: ${videos[index]}");
+                        print("Open Crossword: ${videos[index]}");
                       },
                     ),
                   );
                 },
-                itemCount: 3,
+                itemCount: controller.details?.crossWords.length??0,
               ),
               if (isAdmin)
                 Positioned(
@@ -183,15 +213,17 @@ class _SubjectDetailsState extends State<SubjectDetails> {
                         Icons.assignment_returned_outlined,
                         color: Colors.deepPurpleAccent,
                       ),
-                      title: Text(videos[index]),
+                      title: Text(controller.details?.independentWorks[index].name??"",maxLines: 1),
                       onTap: () {
                         context.go('/subjects/${widget.subjectId}/assignment/${widget.subjectId}');
-                        print("Open video: ${videos[index]}");
+                        if (kDebugMode) {
+                          print("Open video: ${videos[index]}");
+                        }
                       },
                     ),
                   );
                 },
-                itemCount: 3,
+                itemCount:controller.details?.independentWorks.length??0,
               ),
               if (isAdmin)
                 Positioned(

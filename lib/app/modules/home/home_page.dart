@@ -10,14 +10,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-   int? subjectsCount;
-
-   int? videosCount;
-
-   int? tasksCount;
-
-   int? studentsCount;
-   @override
+      @override
    void initState() {
      super.initState();
 
