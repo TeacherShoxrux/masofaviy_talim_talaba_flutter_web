@@ -177,7 +177,7 @@ class _SubjectDetailsState extends State<SubjectDetails> {
                     ),
                     child: ListTile(
                       trailing: IconButton(
-                          onPressed: () => context.go('/subjects/${widget.subjectId}/assignment_student_list/${widget.subjectId}'),
+                          onPressed: () => context.go('/subjects/${widget.subjectId}/assignment_submission/${widget.subjectId}'),
                           icon: Icon(Icons.assessment_rounded)),
                       leading: Icon(
                         Icons.assignment_returned_outlined,

@@ -108,23 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                     // StorageService.role = "Student";// ='student';
                     context.go('/home');
                   } else {
-                    context.read<LoadingController>().show();
-                    try{
-                      var result= await context.read<AuthController>().login(loginController.text, passwordController.text);
-                      await Future.delayed(Duration(seconds: 3));
-                      if(result.success){
-                        context.read<NotificationController>().show("Tizimga muvvafaqiyatli kirdingiz", NotifyType.success);
-                        context.go("location");
-                      }else{
-                        context.read<NotificationController>().show("Tizimga kirishda xatolik: ${result.errorMessage}", NotifyType.warning);
-                      }
-                    }catch(e){
-                      context.read<NotificationController>().show("Xatolik yuz berdi. $e", NotifyType.error);
-                    }finally{
-                      context.read<LoadingController>().hide();
-                    }
-
-
+                 context.read<AuthController>().login(loginController.text, passwordController.text);
 
                    // print("Admin{\n ${result.role}");
                     // context.go('/home');

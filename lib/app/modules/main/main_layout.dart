@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:masofaviy_talim_talaba/app/app_routes.dart';
 import '../../global/app_colors.dart';
 import '../../services/storage_service.dart';
 class MainLayout extends StatefulWidget {
@@ -25,32 +26,32 @@ class _MainLayoutState extends State<MainLayout>
       label: 'Home',
       icon: Icons.home,
       routeIndex: 0,
-      path: '/home',
+      path: AppRoutes.home,
     ),
-    if (StorageService.role == 'admin')
+    if (StorageService.role == 'Teacher')
       _MenuItemData(
         label: 'Student',
         icon: Icons.people,
         routeIndex: 1,
-        path: '/student',
+        path: AppRoutes.students,
       ),
     _MenuItemData(
       label: 'Fanlar',
       icon: Icons.settings,
       routeIndex: 2,
-      path: '/subjects',
+      path:AppRoutes.subjects,
     ),
     _MenuItemData(
       label: 'Baholar',
       icon: Icons.bar_chart,
       routeIndex: 3,
-      path: '/grades',
+      path:AppRoutes.grades,
     ),
     _MenuItemData(
       label: 'Profile',
       icon: Icons.person,
       routeIndex: 4,
-      path: '/profile',
+      path: AppRoutes.profile,
     ),
   ];
 
@@ -231,8 +232,8 @@ class _MainLayoutState extends State<MainLayout>
                       padding: EdgeInsets.all(12),
                       child: InkWell(
                         onTap: () {
-                          // go to login
-                          GoRouter.of(context).go('/login');
+                          StorageService.clear();
+                          GoRouter.of(context).go(AppRoutes.login);
                         },
                         child: Row(
                           children: [

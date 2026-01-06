@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:masofaviy_talim_talaba/app/Services/api_client_service.dart';
+import 'package:masofaviy_talim_talaba/app/app_routes.dart';
 import 'package:masofaviy_talim_talaba/app/modules/students/students_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/assignment/assignment_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/assignment_student_list/assignment_student_list_page.dart';
@@ -50,14 +51,13 @@ void main()async {
     child: MyApp(),
   ),);
 }
-
+final navigatorKey = GlobalKey<NavigatorState>();
 class MyApp extends StatelessWidget {
   MyApp({super.key});
-
   final _router = GoRouter(
-    initialLocation: '/login',
+    initialLocation: AppRoutes.login,
     routes: [
-      GoRoute(path: '/login', builder: (context, state) => LoginPage()),
+      GoRoute(path: AppRoutes.login, builder: (context, state) => LoginPage()),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return MainLayout(navigationShell: navigationShell);
@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/home',
+                path: AppRoutes.home,
                 builder: (context, state) => HomePage(
                   subjectsCount: 12,
                   videosCount: 23,
@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget {
           if(StorageService.role=='Teacher')StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/students',
+                path: AppRoutes.students,
                 builder: (context, state) => StudentsPage()
               ),
             ],
@@ -87,7 +87,7 @@ class MyApp extends StatelessWidget {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/subjects',
+                path: AppRoutes.subjects,
                 builder: (context, state) => SubjectsPage(),
                 routes: [
                   GoRoute(
@@ -96,33 +96,33 @@ class MyApp extends StatelessWidget {
                         SubjectDetails(subjectId: state.pathParameters['id']),
                     routes: [
                       GoRoute(
-                        path: '/video/:video_id',
+                        path: '${AppRoutes.video}/:video_id',
                         builder: (context, state) => VideoPlayerPage(
                           id: state.pathParameters['video_id'],
                         ),
                       ),
                       GoRoute(
-                        path: '/test/:test_id',
+                        path: '${AppRoutes.test}/:test_id',
                         builder: (context, state) =>
                             TestPage(id: state.pathParameters['test_id']),
                       ),
-                      if(StorageService.role=='admin')GoRoute(
-                        path: '/test_add/:test_id',
+                      if(StorageService.role=='Teacher')GoRoute(
+                        path: '${AppRoutes.testAdd}/:test_id',
                         builder: (context, state) =>
                             TestAddPage(id: state.pathParameters['test_id']),
                       ),
-                      if(StorageService.role=='admin')GoRoute(
-                        path: '/assignment_student_list/:id',
+                      if(StorageService.role=='Teacher')GoRoute(
+                        path: '${AppRoutes.assignmentSubmission}/:id',
                         builder: (context, state) =>
                             AssignmentSubmissionsPage(id: state.pathParameters['id']),
                       ),
                       GoRoute(
-                        path: '/test_result/:id',
+                        path: '${AppRoutes.testResult}/:id',
                         builder: (context, state) =>
                             TestResultPage(id: state.pathParameters['id']),
                       ),
                       GoRoute(
-                        path: '/assignment/:id',
+                        path: '${AppRoutes.assignment}/:id',
                         builder: (context, state) =>
                             AssignmentPage(id: state.pathParameters['id']),
                       ),
@@ -135,7 +135,7 @@ class MyApp extends StatelessWidget {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/grades',
+                path: AppRoutes.grades,
                 builder: (context, state) => GradesPage(),
               ),
             ],
@@ -143,7 +143,7 @@ class MyApp extends StatelessWidget {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/profile',
+                path: AppRoutes.profile,
                 builder: (context, state) => ProfilePage(
                   firstName: 'Shoxrux',
                   lastName: 'Yarashov',
@@ -156,8 +156,16 @@ class MyApp extends StatelessWidget {
         ],
       ),
     ],
-       errorBuilder: (context, state) => Scaffold(
-      body: Center(child: Text('Page not found: ${state.uri.toString()}')),
+    navigatorKey: navigatorKey,
+    redirect: (c,g){
+      if(StorageService.accessToken==null||StorageService.accessToken!.isEmpty)
+      {
+        StorageService.clear();
+        return AppRoutes.login;
+      }
+    },
+
+    errorBuilder: (context, state) => Scaffold(body: Center(child: Text('Page not found: ${state.uri.toString()}')),
     ),
   );
 
@@ -175,7 +183,7 @@ class MyApp extends StatelessWidget {
 
           //  GLOBAL LOADING
           Consumer<LoadingController>(
-            builder: (_, loading, __) {
+            builder: (_, loading, _) {
               if (!loading.isLoading) return const SizedBox();
               return Container(
                 color: Colors.black.withOpacity(0.4),
@@ -186,7 +194,7 @@ class MyApp extends StatelessWidget {
 
           //  GLOBAL NOTIFICATION
           Consumer<NotificationController>(
-            builder: (_, notify, __) {
+            builder: (_, notify, _) {
               if (notify.message == null) return const SizedBox();
 
               Color bgColor;
