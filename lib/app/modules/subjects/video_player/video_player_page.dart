@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:masofaviy_talim_talaba/app/global/theme/app_colors.dart';
+import 'package:masofaviy_talim_talaba/app/global/app_colors.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/video_player/player.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/video_player/player_list_widget.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';

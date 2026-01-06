@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:masofaviy_talim_talaba/app/global/theme/app_colors.dart';
-
+import '../../global/app_colors.dart';
 import '../../services/storage_service.dart';
-
 class MainLayout extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
 

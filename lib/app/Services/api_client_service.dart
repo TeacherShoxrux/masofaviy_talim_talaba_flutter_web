@@ -1,6 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:masofaviy_talim_talaba/app/global/theme/BaseResponse.dart';
-import 'package:masofaviy_talim_talaba/app/global/theme/app_urs.dart';
 import 'package:masofaviy_talim_talaba/app/services/storage_service.dart';
 import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
@@ -10,6 +8,8 @@ import 'package:http_parser/http_parser.dart';
 import 'dart:html'as html;
 import 'dart:typed_data';
 
+import '../global/BaseResponse.dart';
+import '../global/app_urs.dart';
 import 'http_client_custom.dart';
 
 

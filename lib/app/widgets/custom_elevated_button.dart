@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import '../global/app_colors.dart';
 
-import '../global/theme/app_colors.dart';
 class CustomElevatedButton extends StatelessWidget {
   const CustomElevatedButton({super.key, required this.text, this.onPressed, this.color});
   final String text;

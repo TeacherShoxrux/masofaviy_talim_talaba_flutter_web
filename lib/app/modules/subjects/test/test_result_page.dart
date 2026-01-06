@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:masofaviy_talim_talaba/app/global/theme/app_colors.dart';
-
+import '../../../global/app_colors.dart';
 import '../../../widgets/custom_elevated_button.dart';
 
 class TestResultPage extends StatefulWidget {

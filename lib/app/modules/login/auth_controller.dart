@@ -2,10 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:masofaviy_talim_talaba/app/Services/api_client_service.dart';
 import 'package:masofaviy_talim_talaba/app/Services/storage_service.dart';
-import 'package:masofaviy_talim_talaba/app/global/theme/BaseResponse.dart';
-import 'package:masofaviy_talim_talaba/app/global/theme/app_urs.dart';
 import 'package:masofaviy_talim_talaba/app/modules/login/session_model.dart';
-
+import '../../global/BaseResponse.dart';
+import '../../global/app_urs.dart';
 import '../loading/loading_controller.dart';
 import '../notification/notification_controller.dart';
 

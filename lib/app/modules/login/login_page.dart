@@ -114,6 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                       await Future.delayed(Duration(seconds: 3));
                       if(result.success){
                         context.read<NotificationController>().show("Tizimga muvvafaqiyatli kirdingiz", NotifyType.success);
+                        context.go("location");
                       }else{
                         context.read<NotificationController>().show("Tizimga kirishda xatolik: ${result.errorMessage}", NotifyType.warning);
                       }

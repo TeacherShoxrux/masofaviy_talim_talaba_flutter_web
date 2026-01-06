@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:masofaviy_talim_talaba/app/global/theme/app_colors.dart';
+import '../../../global/app_colors.dart';
 
 class AssignmentDetails extends StatelessWidget {
   const AssignmentDetails({super.key});

@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:masofaviy_talim_talaba/app/global/theme/app_colors.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/details/subject_item.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/details/subject_video_add_alert.dart';
 
+import '../../../global/app_colors.dart';
 import '../../../services/storage_service.dart';
 import '../assignment/assignment_add_alert.dart';
 import '../test_add/test_add_page.dart';

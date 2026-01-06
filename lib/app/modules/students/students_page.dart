@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:masofaviy_talim_talaba/app/modules/students/student_add_alert.dart';
 import 'package:masofaviy_talim_talaba/app/modules/students/student_info_alert.dart';
 import 'package:masofaviy_talim_talaba/app/modules/students/stundent_append_subject_alert.dart';
+import '../../global/app_colors.dart';
 
-import '../../global/theme/app_colors.dart';
 
 class StudentsPage extends StatefulWidget {
   const StudentsPage({super.key});
