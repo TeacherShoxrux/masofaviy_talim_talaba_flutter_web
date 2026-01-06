@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:masofaviy_talim_talaba/app/modules/students/student_add_alert.dart';
+import 'package:masofaviy_talim_talaba/app/modules/students/student_controller.dart';
 import 'package:masofaviy_talim_talaba/app/modules/students/student_info_alert.dart';
 import 'package:masofaviy_talim_talaba/app/modules/students/stundent_append_subject_alert.dart';
+import 'package:provider/provider.dart';
 import '../../global/app_colors.dart';
 
 
@@ -84,23 +86,27 @@ class _StudentsPageState extends State<StudentsPage> {
   @override
   void initState() {
     super.initState();
-    filteredStudents = students;
+    // filteredStudents = students;
+    Future.microtask((){
+      context.read<StudentController>().getStudentsList();
+    });
   }
 
   void searchStudent(String query) {
-    setState(() {
-      filteredStudents = students
-          .where(
-            (s) =>
-                s["name"].toLowerCase().contains(query.toLowerCase()) ||
-                s["info"].toLowerCase().contains(query.toLowerCase()),
-          )
-          .toList();
-    });
+    // setState(() {
+    //   filteredStudents = students
+    //       .where(
+    //         (s) =>
+    //             s["name"].toLowerCase().contains(query.toLowerCase()) ||
+    //             s["info"].toLowerCase().contains(query.toLowerCase()),
+    //       )
+    //       .toList();
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
+    var controller= context.read<StudentController>();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Talabalar ro'yhati"),
@@ -137,9 +143,9 @@ class _StudentsPageState extends State<StudentsPage> {
             const SizedBox(height: 16),
             Expanded(
               child: ListView.builder(
-                itemCount: filteredStudents.length,
+                itemCount: controller.students.length,
                 itemBuilder: (context, index) {
-                  final s = filteredStudents[index];
+                  final s = controller.students[index];
 
                   return Card(
                     margin: const EdgeInsets.only(bottom: 12),
@@ -153,19 +159,18 @@ class _StudentsPageState extends State<StudentsPage> {
                       /// LEFT SIDE — IMAGE
                       leading: CircleAvatar(
                         radius: 30,
-                        backgroundImage: NetworkImage(s["img"]),
+                        backgroundImage: NetworkImage(s.image),
                       ),
 
                       /// MIDDLE — NAME + INFO
                       title: Text(
-                        s["name"],
+                        s.fullName,
                         style: const TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      subtitle: Text(s["info"]),
-
+                      subtitle: Text(s.phone),
                       trailing: SizedBox(
                         width: 120,
                         child: Row(

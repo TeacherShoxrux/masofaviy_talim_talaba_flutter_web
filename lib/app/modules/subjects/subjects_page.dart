@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:masofaviy_talim_talaba/app/Services/storage_service.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/subject_add_alert.dart';
+import 'package:masofaviy_talim_talaba/app/modules/subjects/subject_controller.dart';
 import 'package:masofaviy_talim_talaba/app/widgets/custom_elevated_button.dart';
+import 'package:provider/provider.dart';
 
 import '../../global/app_colors.dart';
 
@@ -22,10 +24,19 @@ class _SubjectsPageState extends State<SubjectsPage> {
     "Boshqarish nazariyasini amaliy asoslari",
   ];
   bool isAdmin = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.microtask((){
+      context.read<SubjectController>().getSubjectList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    isAdmin = StorageService.role == 'admin';
+    isAdmin = StorageService.role == 'Teacher';
+    var controller = context.watch<SubjectController>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey.shade300,
@@ -53,7 +64,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
         padding: EdgeInsets.only(left: 30, right: 40),
         color: Colors.grey.shade300,
         child: ListView.builder(
-          itemCount: item.length,
+          itemCount: controller.subjects.length,
           itemBuilder: (_, i) => Card(
             child: ListTile(
               onTap: () => context.go('/subjects/12'),
@@ -64,13 +75,13 @@ class _SubjectsPageState extends State<SubjectsPage> {
                 color: AppColors.primaryColor,
               ),
               trailing: CustomElevatedButton(text: "Kirish"),
-              title: Text(item[i]),
+              title: Text( controller.subjects[i].name,),
               titleTextStyle: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
               subtitle: Text(
-                "Matematika va geografiya fanlarni qiloli hisoblanadi va uni o'rganish kerak",
+                controller.subjects[i].description,
               ),
             ),
           ),

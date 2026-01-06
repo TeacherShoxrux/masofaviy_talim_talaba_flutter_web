@@ -41,17 +41,17 @@ class CustomHttpClient extends http.BaseClient {
     // }
 
     // 5. Interceptor: javob logi
-    // if (kDebugMode) {
-    //   final cloned = await http.Response.fromStream(response);
-    //   print('⬅️ [${cloned.statusCode}] ${request.url}');
-    //   print('Response body: ${cloned.body}');
-    //   return http.StreamedResponse(
-    //     Stream.value(utf8.encode(cloned.body)),
-    //     cloned.statusCode,
-    //     headers: cloned.headers,
-    //     reasonPhrase: cloned.reasonPhrase,
-    //     request: response.request,
-    //   );
+    if (kDebugMode) {
+      final cloned = await http.Response.fromStream(response);
+      print('⬅️ [${cloned.statusCode}] ${request.url}');
+      print('Response body: ${cloned.body}');
+      return http.StreamedResponse(
+        Stream.value(utf8.encode(cloned.body)),
+        cloned.statusCode,
+        headers: cloned.headers,
+        reasonPhrase: cloned.reasonPhrase,
+        request: response.request,
+      );}
 
 
     return response;

@@ -8,7 +8,7 @@ import 'package:http_parser/http_parser.dart';
 import 'dart:html'as html;
 import 'dart:typed_data';
 
-import '../global/BaseResponse.dart';
+import '../global/base_response.dart';
 import '../global/app_urs.dart';
 import 'http_client_custom.dart';
 
@@ -22,13 +22,11 @@ class ApiService {
   final String baseUrl = AppUrs.baseUrl;
   final http.Client httpClient = CustomHttpClient();
 
-
   Future<String> uploadImage(String endpoint, PlatformFile file) async {
     final uri = Uri.parse('$baseUrl/$endpoint');
     final request = http.MultipartRequest('POST', uri)
       ..headers['Authorization'] = 'Bearer ${StorageService.accessToken}'
       ..files.add(http.MultipartFile.fromBytes(
-
           'image', await file.xFile.readAsBytes(),
           filename: file.name,
           contentType: MediaType('image','${file.identifier}')));
@@ -87,9 +85,13 @@ class ApiService {
     }
   }
 
-  Future<BaseResponse<T>> get<T>(String endpoint,T Function(Map<String, dynamic>) fromJsonT,) async {
+  Future<BaseResponse<T>> get<T>(String endpoint, T Function(Map<String, dynamic> json) fromJsonT) async {
     final response = await httpClient.get(Uri.parse('$baseUrl/$endpoint'));
-    return BaseResponse.fromJson(_handleResponse(response), fromJsonT);
+    return BaseResponse<T>.fromJson(_handleResponse(response), fromJsonT);
+  }
+  Future<BaseResponseList<T>> getList<T>(String endpoint, T Function(Map<String, dynamic> json) fromJsonT) async {
+    final response = await httpClient.get(Uri.parse('$baseUrl/$endpoint'));
+    return BaseResponseList<T>.fromJson(_handleResponse(response), fromJsonT);
   }
 
   Future<BaseResponse<T>> post<T>({required String endpoint, required Map<String, dynamic> data,required T Function(Map<String, dynamic>) fromJsonT}) async {

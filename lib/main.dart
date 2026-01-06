@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:masofaviy_talim_talaba/app/Services/api_client_service.dart';
 import 'package:masofaviy_talim_talaba/app/app_routes.dart';
+import 'package:masofaviy_talim_talaba/app/modules/home/home_controller.dart';
 import 'package:masofaviy_talim_talaba/app/modules/students/students_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/assignment/assignment_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/assignment_student_list/assignment_student_list_page.dart';
@@ -14,6 +15,8 @@ import 'package:provider/provider.dart';
 import 'app/modules/loading/loading_controller.dart';
 import 'app/modules/login/auth_controller.dart';
 import 'app/modules/notification/notification_controller.dart';
+import 'app/modules/students/student_controller.dart';
+import 'app/modules/subjects/subject_controller.dart';
 import 'app/services/storage_service.dart';
 import 'app/modules/grades/grades_page.dart';
 import 'app/modules/home/home_page.dart';
@@ -30,22 +33,39 @@ void main()async {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(statusBarColor: Colors.blueAccent),
   );
-  await StorageService.init();
+
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => LoadingController()),
       ChangeNotifierProvider(create: (_) => NotificationController()),
-      ChangeNotifierProxyProvider2<
-          LoadingController,
-          NotificationController,
-          AuthController>(
-        create: (_) => AuthController(
-          loading: LoadingController(),
-          notify: NotificationController(),
-          apiService: ApiService(),
+      Provider(create: (_) => ApiService()),
+      ChangeNotifierProvider(
+        create: (context) => AuthController(
+          loading: context.read<LoadingController>(),
+          notify: context.read<NotificationController>(),
+          apiService: context.read<ApiService>(),
         ),
-        update: (_, loading, notify, __) =>
-            AuthController(loading: loading, notify: notify, apiService: ApiService()),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => HomeController(
+          loading: context.read<LoadingController>(),
+          notify: context.read<NotificationController>(),
+          apiService: context.read<ApiService>(),
+        ),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => StudentController(
+          loading: context.read<LoadingController>(),
+          notify: context.read<NotificationController>(),
+          apiService: context.read<ApiService>(),
+        ),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => SubjectController(
+          loading: context.read<LoadingController>(),
+          notify: context.read<NotificationController>(),
+          apiService: context.read<ApiService>(),
+        ),
       ),
     ],
     child: MyApp(),
@@ -67,12 +87,7 @@ class MyApp extends StatelessWidget {
             routes: [
               GoRoute(
                 path: AppRoutes.home,
-                builder: (context, state) => HomePage(
-                  subjectsCount: 12,
-                  videosCount: 23,
-                  tasksCount: 56,
-                  studentsCount: 45,
-                ),
+                builder: (context, state) => HomePage(),
               ),
             ],
           ),
@@ -164,7 +179,6 @@ class MyApp extends StatelessWidget {
         return AppRoutes.login;
       }
     },
-
     errorBuilder: (context, state) => Scaffold(body: Center(child: Text('Page not found: ${state.uri.toString()}')),
     ),
   );

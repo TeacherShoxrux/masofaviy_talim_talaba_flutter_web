@@ -1,41 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:masofaviy_talim_talaba/app/modules/home/home_controller.dart';
+import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({
-    super.key,
-    required this.subjectsCount,
-    required this.videosCount,
-    required this.tasksCount,
-    required this.studentsCount,
-  });
-  final int subjectsCount;
-  final int videosCount;
-  final int tasksCount;
-  final int studentsCount;
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+   int? subjectsCount;
+
+   int? videosCount;
+
+   int? tasksCount;
+
+   int? studentsCount;
+   @override
+   void initState() {
+     super.initState();
+
+     WidgetsBinding.instance.addPostFrameCallback((_) {
+       context.read<HomeController>().getDetail();
+     });
+   }
 
   @override
   Widget build(BuildContext context) {
+    final controller = context.watch<HomeController>();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Dashboard"),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Center(
-          child: Wrap(
+      body: Consumer<HomeController>(
+          builder: (context, controller, _) {
+            return SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Center(
+                  child: Wrap(
+                    spacing: 16,
+                    runSpacing: 16,
+                    alignment: WrapAlignment.start,
+                    children: [
+                      _buildCard("Fanlar",context.read<HomeController>().statisticsModel?.subjectsCount??0, Icons.book),
+                      _buildCard("Videolar",context.read<HomeController>().statisticsModel?.videosCount ?? 0, Icons.video_collection),
+                      _buildCard("Topshiriqlar", context.read<HomeController>().statisticsModel?.independentWorkCount ?? 0, Icons.assignment),
+                      _buildCard("Testlar", context.read<HomeController>().statisticsModel?.testsCount ?? 0, Icons.assessment_outlined),
+                    ],
+                  ),
+                ),
 
-            spacing: 16,
-            runSpacing: 16,
-            alignment: WrapAlignment.start,
-            children: [
-              _buildCard("Fanlar", subjectsCount, Icons.book),
-              _buildCard("Videolar", videosCount, Icons.video_collection),
-              _buildCard("Topshiriqlar", tasksCount, Icons.assignment),
-              _buildCard("Talabalar", studentsCount, Icons.people),
-            ],
-          ),
-        ),
+          );
+        }
       ),
     );
   }
