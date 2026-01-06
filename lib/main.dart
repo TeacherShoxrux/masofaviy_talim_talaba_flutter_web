@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:masofaviy_talim_talaba/app/Services/api_client_service.dart';
 import 'package:masofaviy_talim_talaba/app/modules/students/students_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/assignment/assignment_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/assignment_student_list/assignment_student_list_page.dart';
@@ -9,10 +10,9 @@ import 'package:masofaviy_talim_talaba/app/modules/subjects/test/test_page.dart'
 import 'package:masofaviy_talim_talaba/app/modules/subjects/test/test_result_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/video_player/video_player_page.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'app/modules/login/auth_api.dart';
+import 'app/modules/loading/loading_controller.dart';
 import 'app/modules/login/auth_controller.dart';
-import 'app/modules/login/auth_repo.dart';
+import 'app/modules/notification/notification_controller.dart';
 import 'app/services/storage_service.dart';
 import 'app/modules/grades/grades_page.dart';
 import 'app/modules/home/home_page.dart';
@@ -32,10 +32,19 @@ void main()async {
   await StorageService.init();
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(
+      ChangeNotifierProvider(create: (_) => LoadingController()),
+      ChangeNotifierProvider(create: (_) => NotificationController()),
+      ChangeNotifierProxyProvider2<
+          LoadingController,
+          NotificationController,
+          AuthController>(
         create: (_) => AuthController(
-          repository:AuthRepository(AuthApi()),
+          loading: LoadingController(),
+          notify: NotificationController(),
+          apiService: ApiService(),
         ),
+        update: (_, loading, notify, __) =>
+            AuthController(loading: loading, notify: notify, apiService: ApiService()),
       ),
     ],
     child: MyApp(),
@@ -159,6 +168,86 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
       theme: ThemeData(useMaterial3: true),
+      builder: (context, child) {
+      return Stack(
+        children: [
+          child!,
+
+          //  GLOBAL LOADING
+          Consumer<LoadingController>(
+            builder: (_, loading, __) {
+              if (!loading.isLoading) return const SizedBox();
+              return Container(
+                color: Colors.black.withOpacity(0.4),
+                child: const Center(child: CircularProgressIndicator()),
+              );
+            },
+          ),
+
+          //  GLOBAL NOTIFICATION
+          Consumer<NotificationController>(
+            builder: (_, notify, __) {
+              if (notify.message == null) return const SizedBox();
+
+              Color bgColor;
+              IconData icon;
+
+              switch (notify.type) {
+                case NotifyType.success:
+                  bgColor = Colors.green;
+                  icon = Icons.check_circle;
+                  break;
+                case NotifyType.error:
+                  bgColor = Colors.red;
+                  icon = Icons.error;
+                  break;
+                case NotifyType.warning:
+                  bgColor = Colors.orange;
+                  icon = Icons.warning;
+                  break;
+                default:
+                  bgColor = Colors.blue;
+                  icon = Icons.info;
+              }
+
+              return Positioned(
+                top: 20,
+                right: 20,
+                child: Material(
+                  color: Colors.transparent,
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: bgColor,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(icon, color: Colors.white),
+                        const SizedBox(width: 8),
+                        Text(
+                          notify.message!,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      );
+    },
+
     );
+
+    // return MaterialApp.router(
+    //   title: 'Masofaviy ta\'lim platformasi',
+    //   debugShowCheckedModeBanner: false,
+    //   routerConfig: _router,
+    //   theme: ThemeData(useMaterial3: true),
+    // );
   }
 }

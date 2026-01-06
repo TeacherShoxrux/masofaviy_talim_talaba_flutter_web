@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import '../../services/storage_service.dart';
 import '../../widgets/app_text_field.dart';
 import '../../widgets/custom_button.dart';
+import '../loading/loading_controller.dart';
+import '../notification/notification_controller.dart';
 import 'auth_controller.dart';
 
 enum UserType { student, admin }
@@ -103,11 +105,27 @@ class _LoginPageState extends State<LoginPage> {
                 onTap: ()async {
                   if (selectedUser == UserType.student) {
                     print("Talaba login: ${phoneController.text}");
-                    StorageService.setRole("Student");// ='student';
+                    // StorageService.role = "Student";// ='student';
                     context.go('/home');
                   } else {
-                  var result= await context.read<AuthController>().login(loginController.text, passwordController.text);
-                   print("Admin{\n ${result.role}");
+                    context.read<LoadingController>().show();
+                    try{
+                      var result= await context.read<AuthController>().login(loginController.text, passwordController.text);
+                      await Future.delayed(Duration(seconds: 3));
+                      if(result.success){
+                        context.read<NotificationController>().show("Tizimga muvvafaqiyatli kirdingiz", NotifyType.success);
+                      }else{
+                        context.read<NotificationController>().show("Tizimga kirishda xatolik: ${result.errorMessage}", NotifyType.warning);
+                      }
+                    }catch(e){
+                      context.read<NotificationController>().show("Xatolik yuz berdi. $e", NotifyType.error);
+                    }finally{
+                      context.read<LoadingController>().hide();
+                    }
+
+
+
+                   // print("Admin{\n ${result.role}");
                     // context.go('/home');
                   }
                 },
