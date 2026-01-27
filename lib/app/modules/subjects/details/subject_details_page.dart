@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/details/subject_item.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/details/subject_video_add_alert.dart';
-import 'package:masofaviy_talim_talaba/app/modules/subjects/subject_controller.dart';
+import 'package:masofaviy_talim_talaba/app/modules/subjects/components/subject_controller.dart';
 import 'package:provider/provider.dart';
 
 import '../../../global/app_colors.dart';
@@ -67,11 +67,9 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
                       leading: Icon(Icons.play_circle_fill, color: Colors.red),
                       title: Text(controller.details?.videos[index].name??""),
                       onTap: () {
-                        final videoId = "12";
                         context.go(
-                          '/subjects/${widget.subjectId}/video/$videoId',
+                          '/subjects/${widget.subjectId}/video/${controller.details?.videos[index].id}',
                         );
-                        // print("Open video: ${videos[index]}");
                       },
                     ),
                   );

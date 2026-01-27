@@ -16,7 +16,7 @@ import 'app/modules/loading/loading_controller.dart';
 import 'app/modules/login/auth_controller.dart';
 import 'app/modules/notification/notification_controller.dart';
 import 'app/modules/students/student_controller.dart';
-import 'app/modules/subjects/subject_controller.dart';
+import 'app/modules/subjects/components/subject_controller.dart';
 import 'app/services/storage_service.dart';
 import 'app/modules/grades/grades_page.dart';
 import 'app/modules/home/home_page.dart';

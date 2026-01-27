@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:masofaviy_talim_talaba/app/Services/storage_service.dart';
 import 'package:masofaviy_talim_talaba/app/app_routes.dart';
-import 'package:masofaviy_talim_talaba/app/modules/subjects/subject_add_alert.dart';
-import 'package:masofaviy_talim_talaba/app/modules/subjects/subject_controller.dart';
+import 'package:masofaviy_talim_talaba/app/modules/subjects/components/subject_add_alert.dart';
+import 'package:masofaviy_talim_talaba/app/modules/subjects/components/subject_controller.dart';
 import 'package:masofaviy_talim_talaba/app/widgets/custom_elevated_button.dart';
 import 'package:provider/provider.dart';
 
@@ -37,7 +37,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
   @override
   Widget build(BuildContext context) {
     isAdmin = StorageService.role == 'Teacher';
-    var controller = context.watch<SubjectController>();
+    var controller = context.read<SubjectController>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey.shade300,
