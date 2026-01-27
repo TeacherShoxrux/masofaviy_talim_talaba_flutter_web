@@ -16,6 +16,7 @@ class AppUrs {
   static String video(String? id)=>"api/Video/$id";
   static String videoAllVideoSubjectId(String? id)=>"api/Video/GetAllVideoList/$id";
   static String videoCreate="api/Video/";
+  static String test="api/Test/";
 
 
 

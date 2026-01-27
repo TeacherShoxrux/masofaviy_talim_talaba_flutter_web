@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../../../global/app_colors.dart';
 import '../../../services/storage_service.dart';
 import '../assignment/assignment_add_alert.dart';
+import '../test/test_create_dialog.dart';
 import '../test_add/test_add_page.dart';
 
 class SubjectDetailsPage extends StatefulWidget {
@@ -20,12 +21,19 @@ class SubjectDetailsPage extends StatefulWidget {
 }
 
 class _SubjectDetailsState extends State<SubjectDetailsPage> {
-  // var videos = [
-  //   "Video 1: Introduction",
-  //   "Video 2: Setup",
-  //   "Video 3: Hello World",
-  // ];
-  bool isAdmin = false;
+  bool isAdmin = true;
+  void _showCreateTestDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => TestCreateDialog(
+        subjectId: int.parse(widget.subjectId), // Hozirgi fan ID-si
+        onSave: (testData) {
+
+          context.read<SubjectController>().createTest( testData);
+        },
+      ),
+    );
+  }
   @override
   void initState() {
     // TODO: implement initState
@@ -41,7 +49,7 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
   }
   @override
   Widget build(BuildContext context) {
-    isAdmin = StorageService.role == 'Teacher';
+    // isAdmin = StorageService.role == 'Teacher';
     var controller= context.read<SubjectController>();
     return SingleChildScrollView(
       child: Column(
@@ -107,13 +115,18 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: ListTile(
+                      trailing:IconButton(onPressed: (){
+
+
+                        context.go('/subjects/${widget.subjectId}/test_add/${widget.subjectId}');
+                      }, icon: Icon(Icons.edit, color: Colors.amberAccent,)),
                       leading: Icon(
                         Icons.checklist_outlined,
                         color: Colors.green,
                       ),
                       title: Text(controller.details?.tests[index].name??"",maxLines: 1,),
                       onTap: () {
-                        var testid = 97;
+                        var testid =controller.details?.tests[index].id;
                         context.go(
                           '/subjects/${widget.subjectId}/test/$testid',
                         );
@@ -129,7 +142,8 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
                   right: 15,
                   child: IconButton(
                     onPressed: () {
-                      context.go('/subjects/${widget.subjectId}/test_add/${widget.subjectId}');
+                      _showCreateTestDialog();
+
                     },
                     icon: Icon(
                       CupertinoIcons.add_circled,
