@@ -20,11 +20,11 @@ class SubjectDetailsPage extends StatefulWidget {
 }
 
 class _SubjectDetailsState extends State<SubjectDetailsPage> {
-  var videos = [
-    "Video 1: Introduction",
-    "Video 2: Setup",
-    "Video 3: Hello World",
-  ];
+  // var videos = [
+  //   "Video 1: Introduction",
+  //   "Video 2: Setup",
+  //   "Video 3: Hello World",
+  // ];
   bool isAdmin = false;
   @override
   void initState() {
@@ -39,18 +39,6 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
     context.read<SubjectController>().details=null;
     super.dispose();
   }
-  // @override
-  // void deactivate() {
-  //   context.read<SubjectController>().details=null;
-  //   super.deactivate();
-  // }
-  // @override
-  // void activate() {
-  //   Future.microtask((){
-  //     context.read<SubjectController>().getSubjectDetailsById(widget.subjectId);
-  //   });
-  //   super.activate();
-  // }
   @override
   Widget build(BuildContext context) {
     isAdmin = StorageService.role == 'Teacher';
@@ -83,7 +71,7 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
                         context.go(
                           '/subjects/${widget.subjectId}/video/$videoId',
                         );
-                        print("Open video: ${videos[index]}");
+                        // print("Open video: ${videos[index]}");
                       },
                     ),
                   );
@@ -171,7 +159,7 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
                       ),
                       title: Text(controller.details?.crossWords[index].name??"",maxLines: 1,),
                       onTap: () {
-                        print("Open Crossword: ${videos[index]}");
+                        // print("Open Crossword: ${videos[index]}");
                       },
                     ),
                   );
@@ -193,7 +181,6 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
                 ),
             ],
           ),
-
           Stack(
             children: [
               SubjectItemList(
@@ -217,7 +204,7 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
                       onTap: () {
                         context.go('/subjects/${widget.subjectId}/assignment/${widget.subjectId}');
                         if (kDebugMode) {
-                          print("Open video: ${videos[index]}");
+                          // print("Open video: ${videos[index]}");
                         }
                       },
                     ),
