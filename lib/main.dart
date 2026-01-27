@@ -106,9 +106,9 @@ class MyApp extends StatelessWidget {
                 builder: (context, state) => SubjectsPage(),
                 routes: [
                   GoRoute(
-                    path: ':id',
+                    path: ':subject_id',
                     builder: (context, state) =>
-                        SubjectDetailsPage(subjectId: state.pathParameters['id']!),
+                        SubjectDetailsPage(subjectId: state.pathParameters['subject_id']!),
                     routes: [
                       GoRoute(
                         path: '${AppRoutes.video}/:video_id',
@@ -121,7 +121,8 @@ class MyApp extends StatelessWidget {
                         builder: (context, state) =>
                             TestPage(id: state.pathParameters['test_id']),
                       ),
-                      if(StorageService.role=='Teacher')GoRoute(
+                      // if(StorageService.role=='Teacher')
+                        GoRoute(
                         path: '${AppRoutes.testAdd}/:test_id',
                         builder: (context, state) =>
                             TestAddPage(id: state.pathParameters['test_id']),

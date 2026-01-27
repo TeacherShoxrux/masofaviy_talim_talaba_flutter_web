@@ -14,6 +14,8 @@ class AppUrs {
   static String students([int page=1,int pageSize=50])=>"api/Student/GetAll?page=$page&pageSize=$pageSize";
   static String subjectDetails(String id)=>"api/Subject?id=$id";
   static String video(String? id)=>"api/Video/$id";
+  static String videoAllVideoSubjectId(String? id)=>"api/Video/GetAllVideoList/$id";
+  static String videoCreate="api/Video/";
 
 
 

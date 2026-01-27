@@ -13,7 +13,7 @@ class SubjectController extends ChangeNotifier {
   final NotificationController notify;
 
   List<SubjectModel> subjects=List.empty();
-  // VideoModel? video;
+  List<VideoModel> videos=List.empty();
 
   SubjectDetails? details;
   SubjectController( {required this.apiService, required this.loading, required this.notify});
@@ -81,5 +81,63 @@ class SubjectController extends ChangeNotifier {
       );
     } finally {
       loading.hide();
-    }}
+    }
+    return null;}
+  Future<void> getAllVideosBySubjectId(String? id) async {
+    try {
+      loading.show();
+      final response = await apiService.getList<VideoModel>(AppUrs.videoAllVideoSubjectId(id),VideoModel.fromJson);
+      if (response.success) {
+        videos= response.data;
+        notifyListeners();
+      } else {
+        notify.show(
+          "Ma'lumotlarni olishda xatolik: ${response.errorMessage}",
+          NotifyType.warning,
+        );
+      }
+    } catch (e) {
+      notify.show(
+        "Xatolik yuz berdi: $e",
+        NotifyType.error,
+      );
+    } finally {
+      loading.hide();
+    }
+  }
+
+  Future<bool?> addVideoById({required String name, required String videoUrl, required String videoDetail,required String? subjectId,String? icon}) async {
+    try {
+      loading.show();
+      final response = await apiService.post(endpoint: AppUrs.videoCreate, data: {
+        "subjectId": int.parse(subjectId!),
+        "icon": icon??"icons",
+        "name": name,
+        "description": videoDetail,
+        "videoUrl":  videoUrl
+      }, fromJsonT: VideoModel.fromJson);
+      if (response.success) {
+       response.data;
+       notify.show(
+         "Video muvaffaqiyatli qo'shildi: ${response.data?.name} : ${response.data?.videoUrl}",
+         NotifyType.success,
+       );
+       return true;
+      } else {
+        notify.show(
+          "Ma'lumotlarni olishda xatolik: ${response.errorMessage}",
+          NotifyType.warning,
+        );
+      }
+    } catch (e) {
+      notify.show(
+        "Xatolik yuz berdi: $e",
+        NotifyType.error,
+      );
+    } finally {
+      loading.hide();
+    }
+    return null;
+  }
+
 }

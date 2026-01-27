@@ -1,26 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:masofaviy_talim_talaba/app/global/app_colors.dart';
-import 'package:masofaviy_talim_talaba/app/modules/subjects/components/video_model.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/video_player/player.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/video_player/player_list_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
-
 import '../components/subject_controller.dart';
-
-class VideoItem {
-  final String id;
-  final String title;
-  final String about;
-  final String duration;
-
-  VideoItem({
-    required this.id,
-    required this.title,
-    required this.about,
-    required this.duration,
-  });
-}
 
 class VideoPlayerPage extends StatefulWidget {
   const VideoPlayerPage({super.key, this.id});
@@ -31,184 +16,159 @@ class VideoPlayerPage extends StatefulWidget {
 }
 
 class _VideoPlayerPageState extends State<VideoPlayerPage> {
-  final btnStyle = ButtonStyle(
-    backgroundColor: WidgetStatePropertyAll(AppColors.primaryColor),
-  );
-  final _controller = YoutubePlayerController.fromVideoId(
-    videoId:
-        YoutubePlayerController.convertUrlToId(
-          "https://www.youtube.com/watch?v=bk-UboxN760&list=RDbk-UboxN760&start_radio=1",
-        ) ??
-        "iLnmTe5Q2Qw",
-    // 'iLnmTe5Q2Qw',
-    autoPlay: false,
-    params: const YoutubePlayerParams(showFullscreenButton: true),
-  );
+  late YoutubePlayerController _controller;
+  int? currentPlayingId;
 
-  final videos = [
-    VideoItem(
-      id: "https://www.youtube.com/watch?v=zYV8s7XsWbE&list=RDzYV8s7XsWbE&start_radio=1",
-      title: "Flutter Lesson 1",
-      about: "Intro to Flutter widgets and structure.",
-      duration: "12:04",
-    ),
-    VideoItem(
-      id: "https://www.youtube.com/watch?v=bHLiD72xpDM&list=RDbHLiD72xpDM&start_radio=1",
-      title: "Flutter State Management",
-      about: "Stateful widgets explained.",
-      duration: "18:21",
-    ),
-    VideoItem(
-      id: "https://www.youtube.com/watch?v=RqKY_fNqkos&list=RDRqKY_fNqkos&start_radio=1",
-      title: "Flutter Navigation",
-      about: "go_router navigation tutorial.",
-      duration: "22:10",
-    ),
-    VideoItem(
-      id: "https://www.youtube.com/watch?v=zYV8s7XsWbE&list=RDzYV8s7XsWbE&start_radio=1",
-      title: "Flutter Lesson 1",
-      about: "Intro to Flutter widgets and structure.",
-      duration: "12:04",
-    ),
-    VideoItem(
-      id: "https://www.youtube.com/watch?v=bHLiD72xpDM&list=RDbHLiD72xpDM&start_radio=1",
-      title: "Flutter State Management",
-      about: "Stateful widgets explained.",
-      duration: "18:21",
-    ),
-    VideoItem(
-      id: "https://www.youtube.com/watch?v=RqKY_fNqkos&list=RDRqKY_fNqkos&start_radio=1",
-      title: "Flutter Navigation",
-      about: "go_router navigation tutorial.",
-      duration: "22:10",
-    ),
-    VideoItem(
-      id: "https://www.youtube.com/watch?v=zYV8s7XsWbE&list=RDzYV8s7XsWbE&start_radio=1",
-      title: "Flutter Lesson 1",
-      about: "Intro to Flutter widgets and structure.",
-      duration: "12:04",
-    ),
-    VideoItem(
-      id: "https://www.youtube.com/watch?v=bHLiD72xpDM&list=RDbHLiD72xpDM&start_radio=1",
-      title: "Flutter State Management",
-      about: "Stateful widgets explained.",
-      duration: "18:21",
-    ),
-    VideoItem(
-      id: "https://www.youtube.com/watch?v=RqKY_fNqkos&list=RDRqKY_fNqkos&start_radio=1",
-      title: "Flutter Navigation",
-      about: "go_router navigation tutorial.",
-      duration: "22:10",
-    ),
-    VideoItem(
-      id: "https://www.youtube.com/watch?v=zYV8s7XsWbE&list=RDzYV8s7XsWbE&start_radio=1",
-      title: "Flutter Lesson 1",
-      about: "Intro to Flutter widgets and structure.",
-      duration: "12:04",
-    ),
-    VideoItem(
-      id: "https://www.youtube.com/watch?v=bHLiD72xpDM&list=RDbHLiD72xpDM&start_radio=1",
-      title: "Flutter State Management",
-      about: "Stateful widgets explained.",
-      duration: "18:21",
-    ),
-    VideoItem(
-      id: "https://www.youtube.com/watch?v=RqKY_fNqkos&list=RDRqKY_fNqkos&start_radio=1",
-      title: "Flutter Navigation",
-      about: "go_router navigation tutorial.",
-      duration: "22:10",
-    ),
-    VideoItem(
-      id: "https://www.youtube.com/watch?v=zYV8s7XsWbE&list=RDzYV8s7XsWbE&start_radio=1",
-      title: "Flutter Lesson 1",
-      about: "Intro to Flutter widgets and structure.",
-      duration: "12:04",
-    ),
-    VideoItem(
-      id: "https://www.youtube.com/watch?v=bHLiD72xpDM&list=RDbHLiD72xpDM&start_radio=1",
-      title: "Flutter State Management",
-      about: "Stateful widgets explained.",
-      duration: "18:21",
-    ),
-    VideoItem(
-      id: "https://www.youtube.com/watch?v=RqKY_fNqkos&list=RDRqKY_fNqkos&start_radio=1",
-      title: "Flutter Navigation",
-      about: "go_router navigation tutorial.",
-      duration: "22:10",
-    ),
-    VideoItem(
-      id: "https://www.youtube.com/watch?v=zYV8s7XsWbE&list=RDzYV8s7XsWbE&start_radio=1",
-      title: "Flutter Lesson 1",
-      about: "Intro to Flutter widgets and structure.",
-      duration: "12:04",
-    ),
-    VideoItem(
-      id: "https://www.youtube.com/watch?v=bHLiD72xpDM&list=RDbHLiD72xpDM&start_radio=1",
-      title: "Flutter State Management",
-      about: "Stateful widgets explained.",
-      duration: "18:21",
-    ),
-    VideoItem(
-      id: "https://www.youtube.com/watch?v=RqKY_fNqkos&list=RDRqKY_fNqkos&start_radio=1",
-      title: "Flutter Navigation",
-      about: "go_router navigation tutorial.",
-      duration: "22:10",
-    ),
-  ];
-@override
-void initState(){
-  context.read<SubjectController>().getVideoById(widget.id!);
+  @override
+  void initState() {
+    currentPlayingId=int.parse(widget.id??"0");
     super.initState();
+    _controller = YoutubePlayerController(
+      params: const YoutubePlayerParams(
+        showFullscreenButton: true,
+        mute: false,
+        showControls: true,
+      ),
+    );
+
+
+    // Ma'lumotlarni yuklash
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.id != null) {
+       var subjectId = GoRouterState.of(context).pathParameters['subject_id'];
+       context.read<SubjectController>().getAllVideosBySubjectId(subjectId).then((v) {
+          final videos = context.read<SubjectController>().videos;
+          if (videos.isNotEmpty) {
+            _playVideo(videos.first.videoUrl, videos.first.id);
+          }
+        });
+      }
+    });
   }
-  int selectedIndex = 0;
+
+  // Videoni pleyerda yuklash funksiyasi
+  void _playVideo(String url, int id) {
+    Future.microtask((){context.read<SubjectController>().getVideoById(id.toString());});
+    final videoId = YoutubePlayerController.convertUrlToId(url);
+    if (videoId != null) {
+      _controller.loadVideoById(videoId: videoId);
+      setState(() {
+        currentPlayingId = id;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    var controller = context.watch<SubjectController>();
+    final subjectController = context.watch<SubjectController>();
+    final isDesktop = MediaQuery.of(context).size.width > 1200;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("Videolarni ko'rsih joyi"),
+        title: const Text("Video darslik"),
+        elevation: 0,
       ),
-      body: Container(
-        padding: EdgeInsets.all(25),
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  FutureBuilder<VideoModel?>(
-                    builder: (context,snapshot) {
-                         if(snapshot.connectionState==ConnectionState.waiting) {
-                           return CircularProgressIndicator.adaptive();
-                         }
-                      return Expanded(
-                        child: Player(controller:_controller)
-                      );
-                    }, future: controller.getVideoById(widget.id),
-                  ),
-                  if(MediaQuery.of(context).size.width>1200)VideoExpandableWidget(
-                    title: 'Darslik videolari',
-                    about: 'Videolarni barchasini etiboet bilan korib chiqing',
-                    duration: '12',
-                    videos: videos,
-                    onVideoSelected: (VideoItem video) {
-                      // _controller.loadVideo(video.id);
-                    },
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: isDesktop ? _buildDesktopLayout(subjectController) : _buildMobileLayout(subjectController),
+          );
+        },
+      ),
+    );
+  }
 
-              if(MediaQuery.of(context).size.width<=1200)VideoExpandableWidget(
-                title: 'Darslik videolari', about: 'Videolarni barchasini etiboet bilan korib chiqing', duration: '12', videos: videos,
-                onVideoSelected: (VideoItem video) {
-                  _controller.loadVideo(video.id);
-                },)
+  // Desktop ko'rinishi: Video chapda, List o'ngda
+  Widget _buildDesktopLayout(SubjectController controller) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 3,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Player(controller: _controller),
+              const SizedBox(height: 20),
+              _buildVideoInfo(controller),
             ],
           ),
         ),
+        const SizedBox(width: 20),
+        Expanded(
+          flex: 1,
+          child: _buildVideoList(controller),
+        ),
+      ],
+    );
+  }
+
+  // Mobile ko'rinishi: Video tepada, List pastda
+  Widget _buildMobileLayout(SubjectController controller) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Player(controller: _controller),
+          const SizedBox(height: 20),
+          _buildVideoInfo(controller),
+          const Divider(height: 40),
+          const Text("Barcha darslar", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 10),
+          _buildVideoList(controller, isScrollable: false),
+        ],
       ),
     );
+  }
+
+  // Video ro'yxati vidgeti
+  Widget _buildVideoList(SubjectController controller, {bool isScrollable = true}) {
+    if (controller.videos.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return ListView.separated(
+      shrinkWrap: !isScrollable,
+      physics: isScrollable ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
+      itemCount: controller.videos.length,
+      separatorBuilder: (context, index) => const SizedBox(height: 10),
+      itemBuilder: (context, index) {
+        final video = controller.videos[index];
+        return VideoListItemWidget(
+          item: video,
+          isSelected: currentPlayingId == video.id,
+          onTap: () => _playVideo(video.videoUrl, video.id),
+        );
+      },
+    );
+  }
+
+  // Tanlangan video haqida ma'lumot (Pastki qism)
+  Widget _buildVideoInfo(SubjectController controller) {
+    if (currentPlayingId == null) return const SizedBox();
+
+    // Hozirgi videoni topish
+    final currentVideo = controller.videos.firstWhere((v) => v.id == currentPlayingId);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          currentVideo.name,
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          currentVideo.description ?? "Tavsif mavjud emas",
+          style: TextStyle(color: Colors.grey.shade700, fontSize: 15),
+        ),
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.close(); // Xotirani tozalash
+    super.dispose();
   }
 }

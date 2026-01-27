@@ -82,7 +82,9 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
                   right: 15,
                   child: IconButton(
                     onPressed: () {
-                      showAddVideoDialog(context);
+                      showAddVideoDialog(context,widget.subjectId).then((e){
+                        context.read<SubjectController>().getSubjectDetailsById(widget.subjectId);
+                      });
                     },
                     icon: Icon(
                       CupertinoIcons.add_circled,

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../components/subject_controller.dart';
 
-Future<void> showAddVideoDialog(BuildContext context) async {
+Future<void> showAddVideoDialog(BuildContext context, String? subjectId) async {
   TextEditingController nameController = TextEditingController();
   TextEditingController urlController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-
+  var controller = context.read<SubjectController>();
   await showDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Text(
           "Video qo'shish",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
@@ -22,8 +22,6 @@ Future<void> showAddVideoDialog(BuildContext context) async {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-
-                /// Video nomi
                 TextField(
                   controller: nameController,
                   decoration: const InputDecoration(
@@ -63,11 +61,20 @@ Future<void> showAddVideoDialog(BuildContext context) async {
           ),
           ElevatedButton(
             onPressed: () {
-              // TODO: video saqlash logikasi
-              print("Video nomi: ${nameController.text}");
-              print("Video URL: ${urlController.text}");
-              print("Izohi: ${descriptionController.text}");
-              Navigator.pop(context);
+              // // TODO: video saqlash logikasi
+              // print("Video nomi: ${nameController.text}");
+              // print("Video URL: ${urlController.text}");
+              // print("Izohi: ${descriptionController.text}");
+              controller
+                  .addVideoById(
+                    name: nameController.text,
+                    videoUrl: urlController.text,
+                    videoDetail: descriptionController.text,
+                    subjectId: subjectId,
+                  )
+                  .then((value) async {
+                    Navigator.pop(context);
+                  });
             },
             child: const Text("Saqlash"),
           ),
