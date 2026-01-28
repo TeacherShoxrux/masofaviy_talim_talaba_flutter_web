@@ -28,29 +28,31 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
       builder: (context) => TestCreateDialog(
         subjectId: int.parse(widget.subjectId), // Hozirgi fan ID-si
         onSave: (testData) {
-
-          context.read<SubjectController>().createTest( testData);
+          context.read<SubjectController>().createTest(testData);
         },
       ),
     );
   }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.microtask((){
+    Future.microtask(() {
       context.read<SubjectController>().getSubjectDetailsById(widget.subjectId);
     });
   }
+
   @override
   void dispose() {
-    context.read<SubjectController>().details=null;
+    context.read<SubjectController>().details = null;
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     // isAdmin = StorageService.role == 'Teacher';
-    var controller= context.read<SubjectController>();
+    var controller = context.read<SubjectController>();
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -58,7 +60,7 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
             backgroundColor: Colors.white,
             elevation: 5,
             centerTitle: true,
-            title: Text(controller.details?.subject.name??""),
+            title: Text(controller.details?.subject.name ?? ""),
           ),
           Stack(
             children: [
@@ -73,7 +75,7 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
                     ),
                     child: ListTile(
                       leading: Icon(Icons.play_circle_fill, color: Colors.red),
-                      title: Text(controller.details?.videos[index].name??""),
+                      title: Text(controller.details?.videos[index].name ?? ""),
                       onTap: () {
                         context.go(
                           '/subjects/${widget.subjectId}/video/${controller.details?.videos[index].id}',
@@ -82,7 +84,7 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
                     ),
                   );
                 },
-                itemCount: controller.details?.videos.length?? 0,
+                itemCount: controller.details?.videos.length ?? 0,
               ),
               if (isAdmin)
                 Positioned(
@@ -90,8 +92,10 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
                   right: 15,
                   child: IconButton(
                     onPressed: () {
-                      showAddVideoDialog(context,widget.subjectId).then((e){
-                        context.read<SubjectController>().getSubjectDetailsById(widget.subjectId);
+                      showAddVideoDialog(context, widget.subjectId).then((e) {
+                        context.read<SubjectController>().getSubjectDetailsById(
+                          widget.subjectId,
+                        );
                       });
                     },
                     icon: Icon(
@@ -115,18 +119,24 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: ListTile(
-                      trailing:IconButton(onPressed: (){
-
-
-                        context.go('/subjects/${widget.subjectId}/test_add/${controller.details?.tests[index].id}');
-                      }, icon: Icon(Icons.edit, color: Colors.amberAccent,)),
+                      trailing: IconButton(
+                        onPressed: () {
+                          context.go(
+                            '/subjects/${widget.subjectId}/test_add/${controller.details?.tests[index].id}',
+                          );
+                        },
+                        icon: Icon(Icons.edit, color: Colors.amberAccent),
+                      ),
                       leading: Icon(
                         Icons.checklist_outlined,
                         color: Colors.green,
                       ),
-                      title: Text(controller.details?.tests[index].name??"",maxLines: 1,),
+                      title: Text(
+                        controller.details?.tests[index].name ?? "",
+                        maxLines: 1,
+                      ),
                       onTap: () {
-                        var testid =controller.details?.tests[index].id;
+                        var testid = controller.details?.tests[index].id;
                         context.go(
                           '/subjects/${widget.subjectId}/test/$testid',
                         );
@@ -134,7 +144,7 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
                     ),
                   );
                 },
-                itemCount: controller.details?.tests.length??0,
+                itemCount: controller.details?.tests.length ?? 0,
               ),
               if (isAdmin)
                 Positioned(
@@ -143,7 +153,6 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
                   child: IconButton(
                     onPressed: () {
                       _showCreateTestDialog();
-
                     },
                     icon: Icon(
                       CupertinoIcons.add_circled,
@@ -171,14 +180,17 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
                         Icons.crop_square_sharp,
                         color: Colors.amber,
                       ),
-                      title: Text(controller.details?.crossWords[index].name??"",maxLines: 1,),
+                      title: Text(
+                        controller.details?.crossWords[index].name ?? "",
+                        maxLines: 1,
+                      ),
                       onTap: () {
                         // print("Open Crossword: ${videos[index]}");
                       },
                     ),
                   );
                 },
-                itemCount: controller.details?.crossWords.length??0,
+                itemCount: controller.details?.crossWords.length ?? 0,
               ),
               if (isAdmin)
                 Positioned(
@@ -208,15 +220,23 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
                     ),
                     child: ListTile(
                       trailing: IconButton(
-                          onPressed: () => context.go('/subjects/${widget.subjectId}/assignment_submission/${widget.subjectId}'),
-                          icon: Icon(Icons.assessment_rounded)),
+                        onPressed: () => context.go(
+                          '/subjects/${widget.subjectId}/assignment_submission/${widget.subjectId}',
+                        ),
+                        icon: Icon(Icons.assessment_rounded),
+                      ),
                       leading: Icon(
                         Icons.assignment_returned_outlined,
                         color: Colors.deepPurpleAccent,
                       ),
-                      title: Text(controller.details?.independentWorks[index].name??"",maxLines: 1),
+                      title: Text(
+                        controller.details?.independentWorks[index].name ?? "",
+                        maxLines: 1,
+                      ),
                       onTap: () {
-                        context.go('/subjects/${widget.subjectId}/assignment/${widget.subjectId}');
+                        context.go(
+                          '/subjects/${widget.subjectId}/assignment/${widget.subjectId}',
+                        );
                         if (kDebugMode) {
                           // print("Open video: ${videos[index]}");
                         }
@@ -224,7 +244,7 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
                     ),
                   );
                 },
-                itemCount:controller.details?.independentWorks.length??0,
+                itemCount: controller.details?.independentWorks.length ?? 0,
               ),
               if (isAdmin)
                 Positioned(
@@ -232,8 +252,10 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
                   right: 15,
                   child: IconButton(
                     onPressed: () {
-                      showAddAssignmentDialog(context: context, subjectName: 'fan nomi here');
-
+                      showAddAssignmentDialog(
+                        context: context,
+                        subjectName: 'fan nomi here',
+                      );
                     },
                     icon: Icon(
                       CupertinoIcons.add_circled,
