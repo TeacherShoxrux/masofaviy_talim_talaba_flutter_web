@@ -49,7 +49,6 @@ class _AddTestDialogState extends State<TestAddPage> {
         return AddQuestionDialog(
           testId: int.tryParse(widget.id ?? "0") ?? 0,
           onSave: (newQuestion) {
-            // Controller orqali serverga yuborish
             var controller = context.read<TestController>();
             controller.addQuestion(newQuestion);
           },

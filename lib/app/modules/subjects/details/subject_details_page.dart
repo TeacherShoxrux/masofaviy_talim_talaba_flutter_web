@@ -118,7 +118,7 @@ class _SubjectDetailsState extends State<SubjectDetailsPage> {
                       trailing:IconButton(onPressed: (){
 
 
-                        context.go('/subjects/${widget.subjectId}/test_add/${widget.subjectId}');
+                        context.go('/subjects/${widget.subjectId}/test_add/${controller.details?.tests[index].id}');
                       }, icon: Icon(Icons.edit, color: Colors.amberAccent,)),
                       leading: Icon(
                         Icons.checklist_outlined,
