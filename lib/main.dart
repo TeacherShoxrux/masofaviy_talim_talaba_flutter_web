@@ -8,6 +8,7 @@ import 'package:masofaviy_talim_talaba/app/modules/students/students_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/assignment/assignment_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/assignment_student_list/assignment_student_list_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/details/subject_details_page.dart';
+import 'package:masofaviy_talim_talaba/app/modules/subjects/test/component/test_controller.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/test/test_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/test/test_result_page.dart';
 import 'package:masofaviy_talim_talaba/app/modules/subjects/video_player/video_player_page.dart';
@@ -67,6 +68,13 @@ void main()async {
           apiService: context.read<ApiService>(),
         ),
       ),
+      ChangeNotifierProvider(
+        create: (context) => TestController(
+          loading: context.read<LoadingController>(),
+          notify: context.read<NotificationController>(),
+          apiService: context.read<ApiService>(),
+        ),
+      ),
     ],
     child: MyApp(),
   ),);
@@ -91,7 +99,8 @@ class MyApp extends StatelessWidget {
               ),
             ],
           ),
-          if(StorageService.role=='Teacher')StatefulShellBranch(
+          // if(StorageService.role=='Teacher')
+            StatefulShellBranch(
             routes: [
               GoRoute(
                 path: AppRoutes.students,

@@ -8,7 +8,7 @@ class Player extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
-        
+
         color: Colors.grey.shade300,
         // border:Border.all()
       ),

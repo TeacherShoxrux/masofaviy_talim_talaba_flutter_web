@@ -11,12 +11,12 @@ class BaseResponse<T> extends ApiResponse<T> {
 
   factory BaseResponse.fromJson(
       Map<String, dynamic> json,
-      T Function(Map<String, dynamic> json) fromJsonT,
+      T? Function(Map<String, dynamic> json)? fromJsonT,
       ) {
     return BaseResponse<T>(
       success: json['success'] ?? false,
       data: json['data'] != null
-          ? fromJsonT(json['data'] as Map<String, dynamic>)
+          ? fromJsonT?.call(json['data'] as Map<String, dynamic>)
           : null,
       message: json['message'],
       errorMessage: json['errorMessage'],

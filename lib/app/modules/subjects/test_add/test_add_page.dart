@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:masofaviy_talim_talaba/app/modules/notification/notification_controller.dart';
+import 'package:masofaviy_talim_talaba/app/modules/subjects/test/component/test_controller.dart';
+import 'package:provider/provider.dart';
+import 'components/question_add_alert.dart';
+
 
 class TestAddPage extends StatefulWidget {
   const TestAddPage({super.key, this.id});
@@ -8,7 +13,6 @@ class TestAddPage extends StatefulWidget {
 }
 
 class _AddTestDialogState extends State<TestAddPage> {
-
   TextEditingController testNameController = TextEditingController();
   List<Map<String, dynamic>> questions = [
     {
@@ -32,216 +36,180 @@ class _AddTestDialogState extends State<TestAddPage> {
       "correct": 0,
     },
     {
-      "question": "Dunyo bo‘yicha eng ko‘p aholiga ega davlat?",
+      "question": "Dunyo bo‘yicha eng ko‘p aholiga ega d",
       "variants": ["Hindiston", "Xitoy", "AQSh", "Indoneziya"],
       "correct": 1,
-    }
+    },
   ];
 
-
-  void showAddQuestionDialog() {
-    TextEditingController questionController = TextEditingController();
-    List<String> variants = [];
-    int? correctIndex;
-
-    TextEditingController variantController = TextEditingController();
-
+  void showAddQuestionDialog()async {
     showDialog(
       context: context,
       builder: (context) {
-        return StatefulBuilder(builder: (context, setState) {
-          return AlertDialog(
-            title: const Text(
-              "Savol qo‘shish",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            content: SizedBox(
-              width: 400,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    /// Savol matni
-                    TextField(
-                      controller: questionController,
-                      decoration: const InputDecoration(
-                        labelText: "Savol matni",
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-
-                    /// Variant qo‘shish
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: variantController,
-                            decoration: const InputDecoration(
-                              labelText: "Variant qo‘shish",
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        ElevatedButton(
-                          onPressed: () {
-                            if (variantController.text.isNotEmpty) {
-                              setState(() {
-                                variants.add(variantController.text);
-                                variantController.clear();
-                              });
-                            }
-                          },
-                          child: const Text("Qo‘shish"),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    if (variants.isNotEmpty)
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text("Variantlar (to‘g‘ri javobni belgilang):",
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 6),
-                          ...variants.asMap().entries.map((entry) {
-                            int idx = entry.key;
-                            String val = entry.value;
-                            return ListTile(
-                              title: Text(val),
-                              leading: Radio<int>(
-                                value: idx,
-                                groupValue: correctIndex,
-                                onChanged: (val) {
-                                  setState(() {
-                                    correctIndex = val;
-                                  });
-                                },
-                              ),
-                              trailing: IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () {
-                                  setState(() {
-                                    if (correctIndex == idx) correctIndex = null;
-                                    variants.removeAt(idx);
-                                  });
-                                },
-                              ),
-                            );
-                          }),
-                        ],
-                      ),
-                  ],
-                ),
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text("Bekor qilish"),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  if (questionController.text.isEmpty ||
-                      variants.isEmpty ||
-                      correctIndex == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                            "Savol matni, variantlar va to‘g‘ri javobni belgilang"),
-                      ),
-                    );
-                    return;
-                  }
-
-                  // Serverga yuborish logikasi shu yerga
-                  Map<String, dynamic> questionData = {
-                    "question": questionController.text,
-                    "variants": variants,
-                    "correct": correctIndex,
-                  };
-
-                  // TEMP: serverga yuborish o‘rniga local listga qo‘shdik
-                  questions.add(questionData);
-
-                  Navigator.pop(context); // alertni yopish
-                  setState(() {}); // page ni yangilash
-                },
-                child: const Text("Savolni qo‘shish"),
-              ),
-            ],
-          );
-        });
+        return AddQuestionDialog(
+          testId: int.tryParse(widget.id ?? "0") ?? 0,
+          onSave: (newQuestion) {
+            // Controller orqali serverga yuborish
+            var controller = context.read<TestController>();
+            controller.addQuestion(newQuestion);
+          },
+        );
       },
-    );
+    ).then((e){
+      setState(() {
+      });
+    });
+
   }
 
   @override
   Widget build(BuildContext context) {
+    var controller = context.read<TestController>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Test qo'shish"),
+        title: const Text("Test savollari"),
+        elevation: 0,
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            /// Test nomi
-            TextField(
-              controller: testNameController,
-              decoration: const InputDecoration(
-                labelText: "Test nomi",
-                border: OutlineInputBorder(),
+            /// Test nomi qismi
+            Card(
+              elevation: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: testNameController,
+                  decoration: const InputDecoration(
+                    labelText: "Test nomi",
+                    prefixIcon: Icon(Icons.edit),
+                    border: InputBorder.none,
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 16),
 
             /// Savol qo‘shish tugmasi
-            ElevatedButton.icon(
-              onPressed: showAddQuestionDialog,
-              icon: const Icon(Icons.add),
-              label: const Text("Savol qo‘shish"),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Savollar ro'yxati",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                ElevatedButton.icon(
+                  onPressed: showAddQuestionDialog,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueAccent,
+                    foregroundColor: Colors.white,
+                  ),
+                  icon: const Icon(Icons.add),
+                  label: const Text("Qo‘shish"),
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
+            const Divider(),
 
-            /// Qo‘shilgan savollar ro‘yxati
+            /// Qo‘shilgan savollar ro‘yxati (Render xatoligi tuzatilgan qism)
             Expanded(
-              child: questions.isEmpty
-                  ? const Center(child: Text("Hech qanday savol qo‘shilmagan"))
-                  : ListView.builder(
-                itemCount: questions.length,
-                itemBuilder: (context, index) {
-                  final q = questions[index];
-                  return Card(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    child: ListTile(
-                      title: Text(q["question"]),
-                      subtitle: Text(
-                          "To‘g‘ri javob: ${q["variants"][q["correct"]]}"),
-                    ),
+              child: FutureBuilder<bool?>(
+                // widget.id yoki kerakli ID ni yuboring
+                future: controller.getQuestionsByTestId(int.parse(widget.id ?? "0")),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  final questionsList = controller.testWithQuestions?.questions ?? [];
+
+                  if (questionsList.isEmpty) {
+                    return const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.quiz_outlined, size: 64, color: Colors.grey),
+                          Text("Hech qanday savol qo‘shilmagan", style: TextStyle(color: Colors.grey)),
+                        ],
+                      ),
+                    );
+                  }
+
+                  return ListView.builder(
+                    padding: const EdgeInsets.only(top: 8),
+                    itemCount: questionsList.length,
+                    itemBuilder: (context, index) {
+                      final q = questionsList[index];
+
+                      // To'g'ri javobni topish mantiqi
+                      final correctAnswer = q.answers?.firstWhere(
+                            (a) => a.isCorrect == true,
+                      );
+
+                      return Card(
+                        margin: const EdgeInsets.only(bottom: 12),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        elevation: 3,
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.blue.shade100,
+                            child: Text("${index + 1}"),
+                          ),
+                          title: Text(
+                            q.description ?? "Matn yo'q",
+                            style: const TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                          subtitle: Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.check_circle, size: 16, color: Colors.green),
+                                const SizedBox(width: 4),
+                                Expanded(
+                                  child: Text(
+                                    "Javob: ${correctAnswer?.text}",
+                                    style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete_outline, color: Colors.red),
+                            onPressed: () {
+                              // Savolni o'chirish logikasi
+                            },
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
               ),
             ),
 
-            /// Testni saqlash
-            ElevatedButton(
-              onPressed: questions.isEmpty || testNameController.text.isEmpty
-                  ? null
-                  : () {
-
-                print("Test nomi: ${testNameController.text}");
-                print("Savollar: $questions");
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Test saqlandi!")),
-                );
-                setState(() {
-                  testNameController.clear();
-                  questions.clear();
-                });
-              },
-              child: const Text("Testni saqlash"),
+            /// Testni saqlash tugmasi
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: ElevatedButton(
+                onPressed: (controller.testWithQuestions?.questions?.isEmpty ?? true)
+                    ? null
+                    : () {
+                  // Saqlash logikasi
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Barcha o'zgarishlar saqlandi!")),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.all(16),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                ),
+                child: const Text("TESTNI YAKUNLASH VA SAQLASH", style: TextStyle(letterSpacing: 1.2)),
+              ),
             ),
           ],
         ),

@@ -94,7 +94,7 @@ class ApiService {
     return BaseResponseList<T>.fromJson(_handleResponse(response), fromJsonT);
   }
 
-  Future<BaseResponse<T>> post<T>({required String endpoint, required Map<String, dynamic> data,required T Function(Map<String, dynamic>) fromJsonT}) async {
+  Future<BaseResponse<T>> post<T>({required String endpoint, required Map<String, dynamic> data,T? Function(Map<String, dynamic>)? fromJsonT}) async {
     final response = await httpClient.post(
       Uri.parse('$baseUrl/$endpoint'),
       headers: {'Content-Type': 'application/json'},
